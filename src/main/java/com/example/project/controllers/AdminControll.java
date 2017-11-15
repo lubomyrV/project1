@@ -75,8 +75,20 @@ public class AdminControll {
 
     @PostMapping("/updateProduct")
     public String updateProduct (@RequestParam("id") int id, @RequestParam("model") String model, @RequestParam("price") double price,
-                                 @RequestParam("description") String description, @RequestParam("image") String image) {
+                                 @RequestParam("description") String description, @RequestParam("image") String image, @RequestParam("file") MultipartFile multipartFile) {
+
         String  path = System.getProperty("user.home") + File.separator + "images" + File.separator;
+
+        if (!multipartFile.isEmpty()){
+            String originalFilename = multipartFile.getOriginalFilename();
+            image = (File.separator + "img" + File.separator + originalFilename);
+            try {
+                multipartFile.transferTo(new File(path + originalFilename));
+            }catch (Exception e){
+                System.out.println("not found file: "+e);
+            }
+        }
+
         String realPath = path + image;
         productService.updateProduct(id,model,price,description,image,realPath);
         return "redirect:/admin";
