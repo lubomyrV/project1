@@ -7,4 +7,5 @@ public interface StorageService {
     void init();
     void deleteImg(String path);
     void copyFile(File source, File dest) throws IOException;
+    void renameFile(String oldPath, String newPath);
 }

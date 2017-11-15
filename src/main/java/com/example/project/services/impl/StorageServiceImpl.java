@@ -37,4 +37,11 @@ public class StorageServiceImpl implements StorageService {
     public void copyFile(File source, File dest) throws IOException {
         Files.copy(source.toPath(), dest.toPath());
     }
+
+    @Override
+    public void renameFile(String oldPath, String newPath) {
+        File file = new File(oldPath);
+        File file2 = new File(newPath);
+        file.renameTo(file2);
+    }
 }

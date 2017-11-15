@@ -19,7 +19,7 @@
             <p>Price <input type="text" name="price" th:value="${product.price}" /></p>
             <p>Description</p>
             <p><textarea rows="4" cols="35" name="description" th:text="${product.description}" /></p>
-            <p>Image <input type="text" name="image" th:value="${product.image}" /></p>
+            <p>Image <input type="text" name="image" th:value="${product.image}" readonly="readonly"/></p>
             <p>Image <input type="file" name="file" /></p>
             <input type="submit" value="update"/>
         </th:block>

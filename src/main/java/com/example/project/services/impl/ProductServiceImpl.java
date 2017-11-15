@@ -69,13 +69,32 @@ public class ProductServiceImpl implements ProductService {
         return productDAO.findAll(pageable);
     }
 
-    Sort sort = new Sort(new Sort.Order(Sort.Direction.ASC,"price"));
-
     @Override
-    public List<Product> productListSort() {
-        return productDAO.findAll(sort);
-    }
+    public List<Product> productsSort(String sort) {
+        switch(sort) {
+            case "idAsc":
+                Sort sorting1 = new Sort(new Sort.Order(Sort.Direction.ASC,"id"));
+                return productDAO.findAll(sorting1);
+            case "idDesc":
+                Sort sorting2 = new Sort(new Sort.Order(Sort.Direction.DESC,"id"));
+                return productDAO.findAll(sorting2);
+            case "modelAsc":
+                Sort sorting3 = new Sort(new Sort.Order(Sort.Direction.ASC,"model"));
+                return productDAO.findAll(sorting3);
+            case "modelDesc":
+                Sort sorting4 = new Sort(new Sort.Order(Sort.Direction.DESC,"model"));
+                return productDAO.findAll(sorting4);
+            case "priceAsc":
+                Sort sorting5 = new Sort(new Sort.Order(Sort.Direction.ASC,"price"));
+                return productDAO.findAll(sorting5);
+            case "priceDesc":
+                Sort sorting6 = new Sort(new Sort.Order(Sort.Direction.DESC,"price"));
+                return productDAO.findAll(sorting6);
+            default:
+                return productDAO.findAll();
+        }
 
+    }
 
     @Override
     public List<Product> showPage(int page, int elements) {

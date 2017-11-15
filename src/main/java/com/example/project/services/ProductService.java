@@ -29,7 +29,7 @@ public interface ProductService {
 
     Page productPageable(Pageable pageable);
 
-    List<Product> productListSort();
+    List<Product> productsSort(String sort);
 
     List<Product> showPage(int page, int elements);
 

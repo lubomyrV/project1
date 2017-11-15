@@ -26,7 +26,7 @@ public class AdminControll {
 
     @GetMapping("/admin")
     public String admin (Model model) {
-        List<Product> products = productService.productListSort();
+        List<Product> products = productService.findAll();
         model.addAttribute("allProducts", products);
         return "/admin";
     }
@@ -46,19 +46,26 @@ public class AdminControll {
 
     @PostMapping("/addProduct")
     public String addProduct (@RequestParam("model") String model, @RequestParam("price") double price,
-                              @RequestParam("description") String description, @RequestParam("file") MultipartFile multipartFile) throws IOException {
-        String originalFilename;
+                              @RequestParam("description") String description, @RequestParam("file") MultipartFile multipartFile) {
+        String fileName;
         String  path = System.getProperty("user.home") + File.separator + "images" + File.separator;
-
         if (multipartFile.isEmpty()){
             File source = new File(defaultPath+"defImg.jpg");
             File dest = new File(System.getProperty("user.home") + File.separator + "images" + File.separator+model+".jpg");
-            storageService.copyFile(source,dest);
-            originalFilename = model+".jpg";
-        } else {
-            originalFilename = multipartFile.getOriginalFilename();
             try {
-                multipartFile.transferTo(new File(path + originalFilename));
+                storageService.copyFile(source,dest);
+            } catch (IOException e) {
+                System.out.println("add copy file error: "+ e);
+            }
+            fileName = model+".jpg";
+        } else {
+            if(multipartFile.getOriginalFilename().endsWith(".png")){
+                fileName = model+".png";
+            } else {
+                fileName = model + ".jpg";
+            }
+            try {
+                multipartFile.transferTo(new File(path + fileName));
             }catch (Exception e){
                 System.out.println("not found file: "+e);
             }
@@ -67,8 +74,8 @@ public class AdminControll {
         emptiProduct.setModel(model);
         emptiProduct.setPrice(price);
         emptiProduct.setDescription(description);
-        emptiProduct.setImage(File.separator + "img" + File.separator + originalFilename);
-        emptiProduct.setRealPath(path + originalFilename);
+        emptiProduct.setImage(File.separator + "img" + File.separator + fileName);
+        emptiProduct.setRealPath(path + fileName);
         productService.add(emptiProduct);
         return "redirect:/admin";
     }
@@ -76,28 +83,55 @@ public class AdminControll {
     @PostMapping("/updateProduct")
     public String updateProduct (@RequestParam("id") int id, @RequestParam("model") String model, @RequestParam("price") double price,
                                  @RequestParam("description") String description, @RequestParam("image") String image, @RequestParam("file") MultipartFile multipartFile) {
-
+        Product product = productService.findProductById(id);
+        String fileName;
+        String realPath;
         String  path = System.getProperty("user.home") + File.separator + "images" + File.separator;
-
-        if (!multipartFile.isEmpty()){
-            String originalFilename = multipartFile.getOriginalFilename();
-            image = (File.separator + "img" + File.separator + originalFilename);
+        if(!model.equals(product.getModel())){
+            if(image.endsWith(".png")){
+                fileName = model+".png";
+            } else {
+                fileName = model + ".jpg";
+            }
+            String source = product.getRealPath();
+            String dest = path + fileName;
+            storageService.renameFile(source,dest);
+            image = File.separator + "img" + File.separator + fileName;
+            realPath = path + fileName;
+        } else if (!multipartFile.isEmpty()){
+            String oldPath = productService.findProductById(id).getRealPath();
+            storageService.deleteImg(oldPath);
+            if(multipartFile.getOriginalFilename().endsWith(".png")){
+                fileName = model+".png";
+            } else {
+                fileName = model + ".jpg";
+            }
             try {
-                multipartFile.transferTo(new File(path + originalFilename));
+                multipartFile.transferTo(new File(path + fileName));
             }catch (Exception e){
                 System.out.println("not found file: "+e);
             }
+            image = File.separator + "img" + File.separator + fileName;
+            realPath = path + fileName;
+        } else {
+            realPath = product.getRealPath();
         }
 
-        String realPath = path + image;
         productService.updateProduct(id,model,price,description,image,realPath);
         return "redirect:/admin";
     }
 
-    @PostMapping("/findModel")
+    @GetMapping("/findProduct")
     public String findModel (@RequestParam String modelProduct, Model model){
         List<Product> productList = productService.findProductByModel(modelProduct);
         model.addAttribute("productList", productList);
+        return "/admin";
+    }
+
+    @GetMapping("/sortProduct")
+    public String sortPtoduct (@RequestParam("sort") String sort, Model model){
+        List<Product> products = productService.productsSort(sort);
+        model.addAttribute("allProducts", products);
         return "/admin";
     }
 
