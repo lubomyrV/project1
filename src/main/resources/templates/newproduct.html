@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>New product</title>
+</head>
+<body>
+    <p><a href="/admin"> admin page </a></p>
+    <form action="/addProduct" method="post" enctype="multipart/form-data">
+        <p>Add new product</p>
+        <p>Model <input type="text" name="model" required="required"/></p>
+        <p>Price <input type="text" name="price" required="required"/></p>
+        <p>Description</p>
+        <p><textarea rows="4" cols="35" name="description" required="required"/></p>
+        <p>Image <input type="file" name="file" /></p>
+        <input type="submit" value="Add"/>
+    </form>
+</body>
+</html>

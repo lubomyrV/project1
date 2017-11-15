@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+    <h2>Admin page</h2>
+
+    <p><a href="/logout"> Sign out </a></p>
+    <p><a href="/"> Index page </a></p>
+    <p><a href="/newProduct"> Add new product </a></p>
+    <p><a href="/showAllProducts"> Show all products </a></p>
+    <form action="findModel" method="post">
+        <p>Find product by model:</p>
+        <p>Model <input type="text" name="modelProduct" required="required"/>
+        <input type="submit" value="find" /></p>
+        <input type="hidden"
+               name="${_csrf.parameterName}"
+               value="${_csrf.token}"/>
+    </form>
+    <th:p th:each=" page:${productPage}">
+        <a th:href="'page-'+${page}"><div th:text="${page}"></div></a>
+    </th:p>
+
+    <th:block th:each=" product:${productList}">
+        <img th:src="${product.image}" height="100" />
+        <p th:text=" 'Id: ' + ${product.id} + ', Model: '+ ${product.model} +',  Price: ' + ${product.price} + ', Description: '+ ${product.description}"/>
+        <form action="/edit" method="post">
+            <input type="hidden" name="id" th:value="${product.id}"  />
+            <input type="submit" value="edit" />
+        </form>
+        <form action="/delete" method="post">
+            <input type="hidden" name="id" th:value="${product.id}"  />
+            <input type="submit" value="delete" />
+        </form>
+        <hr/>
+    </th:block>
+
+    <th:block th:each=" product:${allProducts}">
+        <img th:src="${product.image}" height="100" />
+        <p th:text=" 'Id: ' + ${product.id} + ', Model: '+ ${product.model} +',  Price: ' + ${product.price} + ', Description: '+ ${product.description}"/>
+        <form action="/edit" method="post">
+            <input type="hidden" name="id" th:value="${product.id}"  />
+            <input type="submit" value="edit" />
+        </form>
+        <form action="/delete" method="post">
+            <input type="hidden" name="id" th:value="${product.id}"  />
+            <input type="submit" value="delete" />
+        </form>
+        <hr/>
+    </th:block>
+
+</body>
+</html>

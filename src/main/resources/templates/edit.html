@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<body>
+    <h1>Edit page</h1>
+
+    <p><a href="/admin"> admin page </a></p>
+    <p><a href="/"> index page </a></p>
+
+    <form action="/updateProduct" method="post">
+        <th:block th:each=" product:${product}">
+            <p>Update laptop</p>
+            <img th:src="${product.image}" height="100px" />
+            <p>Id <input type="text" name="id" th:value="${product.id}" readonly="readonly"/></p>
+            <p>Model <input type="text" name="model" th:value="${product.model}" /></p>
+            <p>Price <input type="text" name="price" th:value="${product.price}" /></p>
+            <p>Description</p>
+            <p><textarea rows="4" cols="35" name="description" th:text="${product.description}" /></p>
+            <p>Image <input type="text" name="image" th:value="${product.image}" /></p>
+            <input type="submit" value="update"/>
+        </th:block>
+    </form>
+
+</body>
+</html>
