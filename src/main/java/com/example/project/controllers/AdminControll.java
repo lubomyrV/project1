@@ -26,6 +26,8 @@ public class AdminControll {
 
     @GetMapping("/admin")
     public String admin (Model model) {
+        List<Product> products = productService.productListSort();
+        model.addAttribute("allProducts", products);
         return "/admin";
     }
 
