@@ -30,6 +30,7 @@
         <input type="submit" value="sort"/>
     </form>
     <br />
+    <div data-th-if="${countProducts}" ><p th:text="'Count products: '+${countProducts}"></p></div>
     <th:p th:each=" page:${productPage}">
         <a th:href="'page-'+${page}"><div th:text="${page}"></div></a>
     </th:p>

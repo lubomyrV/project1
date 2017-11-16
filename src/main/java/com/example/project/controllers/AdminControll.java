@@ -26,8 +26,6 @@ public class AdminControll {
 
     @GetMapping("/admin")
     public String admin (Model model) {
-        List<Product> products = productService.findAll();
-        model.addAttribute("allProducts", products);
         return "/admin";
     }
 
@@ -39,6 +37,8 @@ public class AdminControll {
     @GetMapping("/showAllProducts")
     public String showProduct (Model model) {
         List<Product> products = productService.findAll();
+        int countProducts = productService.getNumberEmenets();
+        model.addAttribute("countProducts",countProducts);
         model.addAttribute("allProducts", products);
         return "/admin";
     }
@@ -70,13 +70,13 @@ public class AdminControll {
                 System.out.println("not found file: "+e);
             }
         }
-        Product emptiProduct = new Product();
-        emptiProduct.setModel(model);
-        emptiProduct.setPrice(price);
-        emptiProduct.setDescription(description);
-        emptiProduct.setImage(File.separator + "img" + File.separator + fileName);
-        emptiProduct.setRealPath(path + fileName);
-        productService.add(emptiProduct);
+        Product emptyProduct = new Product();
+        emptyProduct.setModel(model);
+        emptyProduct.setPrice(price);
+        emptyProduct.setDescription(description);
+        emptyProduct.setImage(File.separator + "img" + File.separator + fileName);
+        emptyProduct.setRealPath(path + fileName);
+        productService.add(emptyProduct);
         return "redirect:/admin";
     }
 

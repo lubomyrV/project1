@@ -10,15 +10,14 @@
 
     <p><a href="/admin"> admin page </a></p>
 
-    <form action="/reset" method="get">
-        <input type="submit" value="reset filter"/>
-    </form>
-
     <form action="/lprice" method="get">
         <p>Find laptop where price is less or equal</p>
         <label>Price</label>
         <input type="text" name="price" pattern="[0-9.]+" title="Please enter only positive numbers"/>
         <input type="submit" value="find"/>
+    </form>
+    <form action="/reset" method="get">
+        <input type="submit" value="reset filter"/>
     </form>
     <br />
     <th:block th:each=" product:${listProducts}">
