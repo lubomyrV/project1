@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -42,7 +43,9 @@ public class AdminControll {
         int countProducts = productService.getNumberEmenets();
         if(numberPagesList.size() > 1){
             model.addAttribute("numberPagesList",numberPagesList);
+            model.addAttribute("nextPage",1);
         }
+
         model.addAttribute("countProducts",countProducts);
         model.addAttribute("allProducts", products);
         model.addAttribute("elements", elementsOnPage);
@@ -50,22 +53,25 @@ public class AdminControll {
     }
 
     @GetMapping("/page-{number}")
-    public String page(@PathVariable("number") int number, Model model){
+    public String page(@PathVariable("number") int number, Model model) {
         number--;
-        List<Product> products = productService.showPage(number,elementsOnPage);
+        List<Product> products = productService.showPage(number, elementsOnPage);
         List<Integer> numberPagesList = productService.getNumberPagesList(elementsOnPage);
         int countProducts = productService.getNumberEmenets();
 
         int firstPage = numberPagesList.get(0);
-        int lastNumber = numberPagesList.size()-1;
+        System.out.println("firstPage: " + firstPage);
+        int lastNumber = numberPagesList.size() - 1;
         int lastPage = numberPagesList.get(lastNumber);
+        System.out.println("lastPage: " + lastPage);
+        System.out.println("number: " + number);
+
         if((number-1) >= firstPage){
             model.addAttribute("prevPage",number);
         }
         if((number+1) <= lastPage){
-            model.addAttribute("nextPage",number);
+            model.addAttribute("nextPage",number+1);
         }
-
         model.addAttribute("numberPagesList",numberPagesList);
         model.addAttribute("countProducts",countProducts);
         model.addAttribute("allProducts", products);

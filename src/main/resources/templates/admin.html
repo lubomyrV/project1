@@ -51,7 +51,7 @@
         <th:div th:each=" page:${numberPagesList}">
              <a th:href="'page-'+${page+1}"><span th:text="${page+1}"></span></a>
         </th:div>
-        <span data-th-if="${nextPage}" ><a th:href="'page-'+${nextPage+2}"> next </a></span>
+        <span data-th-if="${nextPage}" ><a th:href="'page-'+${nextPage+1}"> next </a></span>
 
     </div>
 
