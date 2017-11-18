@@ -21,7 +21,7 @@ public class AdminControll {
     @Autowired
     private StorageService storageService;
 
-    private int elementsOnPage = 3;
+    private int elementsOnPage = 2;
 
     private String defaultPath = new File("").getAbsolutePath()+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"static"+File.separator+"images"+File.separator;
 
@@ -49,22 +49,23 @@ public class AdminControll {
         return "/admin";
     }
 
-    @GetMapping("/prev")
-    public String prev (){
-        return "redirect:/showAllProducts";
-    }
-
-    @GetMapping("/next")
-    public String next (){
-        return "redirect:/showAllProducts";
-    }
-
     @GetMapping("/page-{number}")
-    public String laptop(@PathVariable("number") int number, Model model){
+    public String page(@PathVariable("number") int number, Model model){
         number--;
         List<Product> products = productService.showPage(number,elementsOnPage);
         List<Integer> numberPagesList = productService.getNumberPagesList(elementsOnPage);
         int countProducts = productService.getNumberEmenets();
+
+        int firstPage = numberPagesList.get(0);
+        int lastNumber = numberPagesList.size()-1;
+        int lastPage = numberPagesList.get(lastNumber);
+        if((number-1) >= firstPage){
+            model.addAttribute("prevPage",number);
+        }
+        if((number+1) <= lastPage){
+            model.addAttribute("nextPage",number);
+        }
+
         model.addAttribute("numberPagesList",numberPagesList);
         model.addAttribute("countProducts",countProducts);
         model.addAttribute("allProducts", products);

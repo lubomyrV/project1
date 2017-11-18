@@ -44,12 +44,15 @@
     </form>
     <br />
     <div data-th-if="${countProducts}" ><p th:text="'Count products: '+${countProducts}"></p></div>
+
     <div data-th-if="${numberPagesList}" >
-        <a href="prev"> prev </a>
+
+        <span data-th-if="${prevPage}" ><a th:href="'page-'+${prevPage}"> prev </a></span>
         <th:div th:each=" page:${numberPagesList}">
              <a th:href="'page-'+${page+1}"><span th:text="${page+1}"></span></a>
         </th:div>
-        <a href="next"> next </a>
+        <span data-th-if="${nextPage}" ><a th:href="'page-'+${nextPage+2}"> next </a></span>
+
     </div>
 
     </div>
