@@ -32,7 +32,7 @@ public interface ProductDAO extends JpaRepository<Product, Integer>{
     List<Product> findLessPrice(@Param("price") Double price);
 
     @Query(value = "SELECT * FROM product LIMIT ?1, ?2", nativeQuery = true)
-    List<Product> findPage(int page, int elements);
+    List<Product> showPage(int page, int elements);
 
     @Query(value = "SELECT * FROM product ORDER BY price LIMIT ?1, ?2", nativeQuery = true)
     List<Product> findPagePriceLessToBig(int page, int elements);

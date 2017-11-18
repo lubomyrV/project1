@@ -22,14 +22,14 @@
     <br />
     <th:block th:each=" product:${listProducts}">
         <img th:src="${product.image}" height="100" />
-        <p><a th:href="${product.model}+'-'+${product.id+42}"><div th:text="${product.model}"></div></a></p>
+        <p><a th:href="${product.model}+'-'+${product.id+42}"><span th:text="${product.model}"></span></a></p>
         <p th:text="'Model: '+ ${product.model} +',  Price: ' + ${product.price} + ', Description: '+ ${product.description}"/>
         <hr />
     </th:block>
 
     <th:block th:each=" product:${allProducts}">
         <img th:src="${product.image}" height="100" />
-        <p><a th:href="${product.model}+'-'+${product.id+42}"><div th:text="${product.model}"></div></a></p>
+        <p><a th:href="${product.model}+'-'+${product.id+42}"><span th:text="${product.model}"></span></a></p>
         <p th:text="'Model: '+ ${product.model} +',  Price: ' + ${product.price} + ', Description: '+ ${product.description}"/>
         <hr />
     </th:block>

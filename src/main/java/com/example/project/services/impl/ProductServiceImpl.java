@@ -98,7 +98,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> showPage(int page, int elements) {
-        return null;
+        if(page == 0){
+            page = 0;
+        } else if (page >= 1){
+            int number = 0;
+            for (int i = 0; i < page; i++) {
+                number += elements;
+            }
+            page = number;
+        }
+        return productDAO.showPage(page,elements);
     }
 
     @Override
@@ -109,15 +118,20 @@ public class ProductServiceImpl implements ProductService {
             case 1:
                 return productDAO.findPagePriceBigToLess(page,elements);
             default:
-                return productDAO.findPage(page, elements);
+                return productDAO.showPage(page, elements);
         }
-
     }
 
     @Override
     public List<Integer> getNumberPagesList(int elements) {
         List<Integer> integerList = new ArrayList<>();
-        int pages = Math.round(getNumberEmenets()/elements);
+        int pages;
+        double frac = ((double)getNumberEmenets()/elements)%1;
+        if(frac > 0){
+            pages = Math.round(getNumberEmenets()/elements) +1;
+        } else {
+            pages = Math.round(getNumberEmenets()/elements);
+        }
         for (int i = 0; i < pages ; i++) {
             integerList.add(i);
         }
@@ -128,6 +142,5 @@ public class ProductServiceImpl implements ProductService {
     public int getNumberEmenets() {
         return productDAO.countProduct();
     }
-
 
 }

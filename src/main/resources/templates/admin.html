@@ -17,6 +17,19 @@
         <input type="submit" value="find" /></p>
     </form>
 
+    <div data-th-if="${allProducts}" >
+
+    <form action="/elements" method="get" >
+        <p>Elements on page: <span th:text="${elements}"></span></p>
+        <select name="elements">
+            <option value="2" >2</option>
+            <option value="3" >3</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="25" >25</option>
+        </select>
+        <input type="submit" value="apply"/>
+    </form>
     <form action="/sortProduct" method="get" >
         <p>Sort product</p>
         <select name="sort">
@@ -31,9 +44,16 @@
     </form>
     <br />
     <div data-th-if="${countProducts}" ><p th:text="'Count products: '+${countProducts}"></p></div>
-    <th:p th:each=" page:${productPage}">
-        <a th:href="'page-'+${page}"><div th:text="${page}"></div></a>
-    </th:p>
+    <div data-th-if="${numberPagesList}" >
+        <a href="prev"> prev </a>
+        <th:div th:each=" page:${numberPagesList}">
+             <a th:href="'page-'+${page+1}"><span th:text="${page+1}"></span></a>
+        </th:div>
+        <a href="next"> next </a>
+    </div>
+
+    </div>
+    <br />
 
     <th:block th:each=" product:${productList}">
         <img th:src="${product.image}" height="100" />

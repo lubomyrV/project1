@@ -21,6 +21,7 @@ public class AdminControll {
     @Autowired
     private StorageService storageService;
 
+    private int elementsOnPage = 3;
 
     private String defaultPath = new File("").getAbsolutePath()+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"static"+File.separator+"images"+File.separator;
 
@@ -36,13 +37,40 @@ public class AdminControll {
 
     @GetMapping("/showAllProducts")
     public String showProduct (Model model) {
-        List<Product> products = productService.findAll();
+        List<Product> products = productService.showPage(0,elementsOnPage);
+        List<Integer> numberPagesList = productService.getNumberPagesList(elementsOnPage);
         int countProducts = productService.getNumberEmenets();
+        if(numberPagesList.size() > 1){
+            model.addAttribute("numberPagesList",numberPagesList);
+        }
         model.addAttribute("countProducts",countProducts);
         model.addAttribute("allProducts", products);
+        model.addAttribute("elements", elementsOnPage);
         return "/admin";
     }
 
+    @GetMapping("/prev")
+    public String prev (){
+        return "redirect:/showAllProducts";
+    }
+
+    @GetMapping("/next")
+    public String next (){
+        return "redirect:/showAllProducts";
+    }
+
+    @GetMapping("/page-{number}")
+    public String laptop(@PathVariable("number") int number, Model model){
+        number--;
+        List<Product> products = productService.showPage(number,elementsOnPage);
+        List<Integer> numberPagesList = productService.getNumberPagesList(elementsOnPage);
+        int countProducts = productService.getNumberEmenets();
+        model.addAttribute("numberPagesList",numberPagesList);
+        model.addAttribute("countProducts",countProducts);
+        model.addAttribute("allProducts", products);
+        model.addAttribute("elements", elementsOnPage);
+        return "/admin";
+    }
 
     @PostMapping("/addProduct")
     public String addProduct (@RequestParam("model") String model, @RequestParam("price") double price,
@@ -128,10 +156,17 @@ public class AdminControll {
         return "/admin";
     }
 
+    @GetMapping("/elements")
+    public String elements (@RequestParam("elements") int elements){
+        elementsOnPage = elements;
+        return "redirect:/showAllProducts";
+    }
+
     @GetMapping("/sortProduct")
     public String sortPtoduct (@RequestParam("sort") String sort, Model model){
         List<Product> products = productService.productsSort(sort);
         model.addAttribute("allProducts", products);
+        model.addAttribute("elements", elementsOnPage);
         return "/admin";
     }
 
