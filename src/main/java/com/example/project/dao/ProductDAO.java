@@ -11,7 +11,12 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+
 public interface ProductDAO extends JpaRepository<Product, Integer>{
+
+    @Modifying(clearAutomatically = true)
+    @Query("update Product p set p.price =:price where p.id =:id")
+    void updateModel(@Param("id") int id, @Param("price") double price);
 
     @Modifying(clearAutomatically = true)
     @Query("update Product p set p.model=:model, p.price=:price, p.description=:description, p.image=:image, p.realPath=:realPath where p.id=:id")
@@ -20,7 +25,34 @@ public interface ProductDAO extends JpaRepository<Product, Integer>{
     @Query("from Product p where p.model =:model")
     List<Product> findProductByModel(@Param("model") String model);
 
+    @Query("from Product p where p.model =:productModel")
+    Product findOneProductByModel(@Param("productModel") String productModel);
+
     @Query("from Product p where p.price <=:price")
     List<Product> findLessPrice(@Param("price") Double price);
+
+    @Query(value = "SELECT * FROM product LIMIT ?1, ?2", nativeQuery = true)
+    List<Product> showPage(int page, int elements);
+
+    @Query(value = "SELECT * FROM product ORDER BY id LIMIT ?1, ?2", nativeQuery = true)
+    List<Product> idAsc(int page, int elements);
+
+    @Query(value = "SELECT * FROM product ORDER BY id DESC LIMIT ?1, ?2", nativeQuery = true)
+    List<Product> idDesc(int page, int elements);
+
+    @Query(value = "SELECT * FROM product ORDER BY model LIMIT ?1, ?2", nativeQuery = true)
+    List<Product> modelAsc(int page, int elements);
+
+    @Query(value = "SELECT * FROM product ORDER BY model DESC LIMIT ?1, ?2", nativeQuery = true)
+    List<Product> modelDesc(int page, int elements);
+
+    @Query(value = "SELECT * FROM product ORDER BY price LIMIT ?1, ?2", nativeQuery = true)
+    List<Product> priceAsc(int page, int elements);
+
+    @Query(value = "SELECT * FROM product ORDER BY price DESC LIMIT ?1, ?2", nativeQuery = true)
+    List<Product> priceDesc(int page, int elements);
+
+    @Query(value = "SELECT COUNT(id) FROM product", nativeQuery = true)
+    int countProduct();
 
 }

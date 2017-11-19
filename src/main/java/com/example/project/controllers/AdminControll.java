@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -21,6 +22,9 @@ public class AdminControll {
     @Autowired
     private StorageService storageService;
 
+    private int elementsOnPage = 2;
+
+    private String sortPages = "";
 
     private String defaultPath = new File("").getAbsolutePath()+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"static"+File.separator+"images"+File.separator;
 
@@ -36,55 +40,141 @@ public class AdminControll {
 
     @GetMapping("/showAllProducts")
     public String showProduct (Model model) {
-        List<Product> products = productService.findAll();
+        List<Product> products = productService.showPage(0,elementsOnPage,sortPages);
+        List<Integer> numberPagesList = productService.getNumberPagesList(elementsOnPage);
+        int countProducts = productService.getNumberEmenets();
+        if(numberPagesList.size() > 1){
+            model.addAttribute("numberPagesList",numberPagesList);
+            model.addAttribute("nextPage",1);
+        }
+
+        model.addAttribute("countProducts",countProducts);
         model.addAttribute("allProducts", products);
+        model.addAttribute("elements", elementsOnPage);
+        model.addAttribute("sortPages", sortPages);
         return "/admin";
     }
 
+    @GetMapping("/page-{number}")
+    public String page(@PathVariable("number") int number, Model model) {
+        number--;
+        List<Product> products = productService.showPage(number, elementsOnPage,sortPages);
+        List<Integer> numberPagesList = productService.getNumberPagesList(elementsOnPage);
+        int countProducts = productService.getNumberEmenets();
+        int firstPage = numberPagesList.get(0);
+        int lastNumber = numberPagesList.size() - 1;
+        int lastPage = numberPagesList.get(lastNumber);
+        if((number-1) >= firstPage){
+            model.addAttribute("prevPage",number);
+        }
+        if((number+1) <= lastPage){
+            model.addAttribute("nextPage",number+1);
+        }
+        model.addAttribute("numberPagesList",numberPagesList);
+        model.addAttribute("countProducts",countProducts);
+        model.addAttribute("allProducts", products);
+        model.addAttribute("elements", elementsOnPage);
+        model.addAttribute("sortPages", sortPages);
+        return "/admin";
+    }
 
     @PostMapping("/addProduct")
     public String addProduct (@RequestParam("model") String model, @RequestParam("price") double price,
-                              @RequestParam("description") String description, @RequestParam("file") MultipartFile multipartFile) throws IOException {
-        String originalFilename;
+                              @RequestParam("description") String description, @RequestParam("file") MultipartFile multipartFile) {
+        String fileName;
         String  path = System.getProperty("user.home") + File.separator + "images" + File.separator;
-
         if (multipartFile.isEmpty()){
             File source = new File(defaultPath+"defImg.jpg");
             File dest = new File(System.getProperty("user.home") + File.separator + "images" + File.separator+model+".jpg");
-            storageService.copyFile(source,dest);
-            originalFilename = model+".jpg";
-        } else {
-            originalFilename = multipartFile.getOriginalFilename();
             try {
-                multipartFile.transferTo(new File(path + originalFilename));
+                storageService.copyFile(source,dest);
+            } catch (IOException e) {
+                System.out.println("add copy file error: "+ e);
+            }
+            fileName = model+".jpg";
+        } else {
+            if(multipartFile.getOriginalFilename().endsWith(".png")){
+                fileName = model+".png";
+            } else {
+                fileName = model + ".jpg";
+            }
+            try {
+                multipartFile.transferTo(new File(path + fileName));
             }catch (Exception e){
                 System.out.println("not found file: "+e);
             }
         }
-        Product emptiProduct = new Product();
-        emptiProduct.setModel(model);
-        emptiProduct.setPrice(price);
-        emptiProduct.setDescription(description);
-        emptiProduct.setImage(File.separator + "img" + File.separator + originalFilename);
-        emptiProduct.setRealPath(path + originalFilename);
-        productService.add(emptiProduct);
+        Product emptyProduct = new Product();
+        emptyProduct.setModel(model);
+        emptyProduct.setPrice(price);
+        emptyProduct.setDescription(description);
+        emptyProduct.setImage(File.separator + "img" + File.separator + fileName);
+        emptyProduct.setRealPath(path + fileName);
+        productService.add(emptyProduct);
         return "redirect:/admin";
     }
 
     @PostMapping("/updateProduct")
     public String updateProduct (@RequestParam("id") int id, @RequestParam("model") String model, @RequestParam("price") double price,
-                                 @RequestParam("description") String description, @RequestParam("image") String image) {
+                                 @RequestParam("description") String description, @RequestParam("image") String image, @RequestParam("file") MultipartFile multipartFile) {
+        Product product = productService.findProductById(id);
+        String fileName;
+        String realPath;
         String  path = System.getProperty("user.home") + File.separator + "images" + File.separator;
-        String realPath = path + image;
+        if(!model.equals(product.getModel())){
+            if(image.endsWith(".png")){
+                fileName = model+".png";
+            } else {
+                fileName = model + ".jpg";
+            }
+            String source = product.getRealPath();
+            String dest = path + fileName;
+            storageService.renameFile(source,dest);
+            image = File.separator + "img" + File.separator + fileName;
+            realPath = path + fileName;
+        } else if (!multipartFile.isEmpty()){
+            String oldPath = productService.findProductById(id).getRealPath();
+            storageService.deleteImg(oldPath);
+            if(multipartFile.getOriginalFilename().endsWith(".png")){
+                fileName = model+".png";
+            } else {
+                fileName = model + ".jpg";
+            }
+            try {
+                multipartFile.transferTo(new File(path + fileName));
+            }catch (Exception e){
+                System.out.println("not found file: "+e);
+            }
+            image = File.separator + "img" + File.separator + fileName;
+            realPath = path + fileName;
+        } else {
+            realPath = product.getRealPath();
+        }
+
         productService.updateProduct(id,model,price,description,image,realPath);
         return "redirect:/admin";
     }
 
-    @PostMapping("/findModel")
+    @GetMapping("/findProduct")
     public String findModel (@RequestParam String modelProduct, Model model){
         List<Product> productList = productService.findProductByModel(modelProduct);
         model.addAttribute("productList", productList);
         return "/admin";
+    }
+
+    @GetMapping("/elements")
+    public String elements (@RequestParam("elements") int elements){
+        elementsOnPage = elements;
+        return "redirect:/showAllProducts";
+    }
+
+    @GetMapping("/sortProduct")
+    public String sortPtoduct (@RequestParam("sort") String sort, Model model){
+        sortPages = sort;
+        List<Product> products = productService.showPage(0,elementsOnPage,sortPages);
+        model.addAttribute("allProducts", products);
+        model.addAttribute("elements", elementsOnPage);
+        return "redirect:/showAllProducts";
     }
 
     @PostMapping("/edit")

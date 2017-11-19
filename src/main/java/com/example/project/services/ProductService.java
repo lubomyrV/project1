@@ -23,4 +23,19 @@ public interface ProductService {
 
     List<Product> findLessPrice(Double price);
 
+    void updatePrice(int id, double price);
+
+    Product findOneProductByModel(String productModel);
+
+    Page productPageable(Pageable pageable);
+
+    List<Product> productsSort(String sort);
+
+    List<Product> showPage(int page, int elements);
+
+    List<Product> showPage(int page, int elements, String sort);
+
+    List<Integer> getNumberPagesList(int elements);
+
+    int getNumberEmenets();
 }

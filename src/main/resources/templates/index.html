@@ -10,27 +10,26 @@
 
     <p><a href="/admin"> admin page </a></p>
 
-    <form action="/reset" method="get">
-        <input type="submit" value="reset filter"/>
-    </form>
-
     <form action="/lprice" method="get">
         <p>Find laptop where price is less or equal</p>
         <label>Price</label>
         <input type="text" name="price" pattern="[0-9.]+" title="Please enter only positive numbers"/>
         <input type="submit" value="find"/>
     </form>
+    <form action="/reset" method="get">
+        <input type="submit" value="reset filter"/>
+    </form>
     <br />
     <th:block th:each=" product:${listProducts}">
         <img th:src="${product.image}" height="100" />
-        <p><a th:href="${product.model}+'-'+${product.id+42}"><div th:text="${product.model}"></div></a></p>
+        <p><a th:href="${product.model}+'-'+${product.id+42}"><span th:text="${product.model}"></span></a></p>
         <p th:text="'Model: '+ ${product.model} +',  Price: ' + ${product.price} + ', Description: '+ ${product.description}"/>
         <hr />
     </th:block>
 
     <th:block th:each=" product:${allProducts}">
         <img th:src="${product.image}" height="100" />
-        <p><a th:href="${product.model}+'-'+${product.id+42}"><div th:text="${product.model}"></div></a></p>
+        <p><a th:href="${product.model}+'-'+${product.id+42}"><span th:text="${product.model}"></span></a></p>
         <p th:text="'Model: '+ ${product.model} +',  Price: ' + ${product.price} + ', Description: '+ ${product.description}"/>
         <hr />
     </th:block>
