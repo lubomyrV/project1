@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>admin pageproduct</title>
+</head>
+<body>
+<p><a href="/admin"> admin page </a></p>
+
+<th:block th:each=" product:${product}">
+    <img th:src="${product.image}" height="100" />
+    <p th:text="'Id: '+${product.id}"></p>
+    <p th:text="'Model: '+${product.model}"></p>
+    <p th:text="'Price: '+${product.price}"></p>
+    <p th:text="'Description: '+${product.description}"></p>
+</th:block>
+</body>
+</html>

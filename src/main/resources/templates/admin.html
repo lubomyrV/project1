@@ -60,6 +60,7 @@
 
     <th:block th:each=" product:${productList}">
         <img th:src="${product.image}" height="100" />
+        <p><a th:href="'/admin/'+${product.model}+'-'+${product.id}"><span th:text="${product.model}"></span></a></p>
         <p th:text=" 'Id: ' + ${product.id} + ', Model: '+ ${product.model} +',  Price: ' + ${product.price} + ', Description: '+ ${product.description}"/>
         <form action="/edit" method="post">
             <input type="hidden" name="id" th:value="${product.id}"  />
@@ -74,6 +75,7 @@
 
     <th:block th:each=" product:${allProducts}">
         <img th:src="${product.image}" height="100" />
+        <p><a th:href="'/admin/'+${product.model}+'-'+${product.id}"><span th:text="${product.model}"></span></a></p>
         <p th:text=" 'Id: ' + ${product.id} + ', Model: '+ ${product.model} +',  Price: ' + ${product.price} + ', Description: '+ ${product.description}"/>
         <form action="/edit" method="post">
             <input type="hidden" name="id" th:value="${product.id}"  />

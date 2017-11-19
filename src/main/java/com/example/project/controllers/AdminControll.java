@@ -23,7 +23,7 @@ public class AdminControll {
     private StorageService storageService;
 
     private int elementsOnPage = 2;
-    private String sortPages = "";
+    private String sortPages = "idAsc";
     private String defaultPath = new File("").getAbsolutePath()+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"static"+File.separator+"images"+File.separator;
 
     @GetMapping("/admin")
@@ -186,7 +186,14 @@ public class AdminControll {
         String oldPath = productService.findProductById(id).getRealPath();
         storageService.deleteImg(oldPath);
         productService.deleteProductById(id);
-        return "redirect:/admin";
+        return "redirect:/showAllProducts";
+    }
+
+    @GetMapping("/admin/{productModel}-{id}")
+    public String laptop(@PathVariable("productModel") String productModel,@PathVariable("id") int id, Model model){
+        Product product = productService.findProductById(id);
+        model.addAttribute("product", product);
+        return "adminproduct";
     }
 
     @GetMapping("/logout")
