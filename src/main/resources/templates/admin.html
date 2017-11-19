@@ -31,7 +31,7 @@
         <input type="submit" value="apply"/>
     </form>
     <form action="/sortProduct" method="get" >
-        <p>Sort product</p>
+        <div data-th-if="${sortPages}" ><p th:text="'Sort products by '+${sortPages}"></p></div>
         <select name="sort">
             <option value="idAsc" >id asc</option>
             <option value="idDesc" >id desc</option>
@@ -43,9 +43,8 @@
         <input type="submit" value="sort"/>
     </form>
     <br />
-    <div data-th-if="${countProducts}" ><p th:text="'Count products: '+${countProducts}"></p></div>
-
-    <div data-th-if="${numberPagesList}" >
+        <div data-th-if="${countProducts}" ><p th:text="'Count products: '+${countProducts}"></p></div>
+        <div data-th-if="${numberPagesList}" >
 
         <span data-th-if="${prevPage}" ><a th:href="'page-'+${prevPage}"> prev </a></span>
         <th:div th:each=" page:${numberPagesList}">
@@ -53,7 +52,8 @@
         </th:div>
         <span data-th-if="${nextPage}" ><a th:href="'page-'+${nextPage+1}"> next </a></span>
 
-    </div>
+
+        </div>
 
     </div>
     <br />

@@ -111,14 +111,31 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> showPage(int page, int elements, int sort) {
+    public List<Product> showPage(int page, int elements, String sort) {
+        if(page == 0){
+            page = 0;
+        } else if (page >= 1){
+            int number = 0;
+            for (int i = 0; i < page; i++) {
+                number += elements;
+            }
+            page = number;
+        }
         switch(sort) {
-            case 0:
-                return productDAO.findPagePriceLessToBig(page,elements);
-            case 1:
-                return productDAO.findPagePriceBigToLess(page,elements);
+            case "idAsc":
+                return productDAO.idAsc(page,elements);
+            case "idDesc":
+                return productDAO.idDesc(page,elements);
+            case "modelAsc":
+                return productDAO.modelAsc(page,elements);
+            case "modelDesc":
+                return productDAO.modelDesc(page,elements);
+            case "priceAsc":
+                return productDAO.priceAsc(page,elements);
+            case "priceDesc":
+                return productDAO.priceDesc(page,elements);
             default:
-                return productDAO.showPage(page, elements);
+                return productDAO.showPage(page,elements);
         }
     }
 

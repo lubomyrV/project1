@@ -33,7 +33,7 @@ public interface ProductService {
 
     List<Product> showPage(int page, int elements);
 
-    List<Product> showPage(int page, int elements, int sort);
+    List<Product> showPage(int page, int elements, String sort);
 
     List<Integer> getNumberPagesList(int elements);
 

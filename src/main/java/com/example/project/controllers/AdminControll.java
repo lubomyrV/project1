@@ -24,6 +24,8 @@ public class AdminControll {
 
     private int elementsOnPage = 2;
 
+    private String sortPages = "";
+
     private String defaultPath = new File("").getAbsolutePath()+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"static"+File.separator+"images"+File.separator;
 
     @GetMapping("/admin")
@@ -38,7 +40,7 @@ public class AdminControll {
 
     @GetMapping("/showAllProducts")
     public String showProduct (Model model) {
-        List<Product> products = productService.showPage(0,elementsOnPage);
+        List<Product> products = productService.showPage(0,elementsOnPage,sortPages);
         List<Integer> numberPagesList = productService.getNumberPagesList(elementsOnPage);
         int countProducts = productService.getNumberEmenets();
         if(numberPagesList.size() > 1){
@@ -49,23 +51,19 @@ public class AdminControll {
         model.addAttribute("countProducts",countProducts);
         model.addAttribute("allProducts", products);
         model.addAttribute("elements", elementsOnPage);
+        model.addAttribute("sortPages", sortPages);
         return "/admin";
     }
 
     @GetMapping("/page-{number}")
     public String page(@PathVariable("number") int number, Model model) {
         number--;
-        List<Product> products = productService.showPage(number, elementsOnPage);
+        List<Product> products = productService.showPage(number, elementsOnPage,sortPages);
         List<Integer> numberPagesList = productService.getNumberPagesList(elementsOnPage);
         int countProducts = productService.getNumberEmenets();
-
         int firstPage = numberPagesList.get(0);
-        System.out.println("firstPage: " + firstPage);
         int lastNumber = numberPagesList.size() - 1;
         int lastPage = numberPagesList.get(lastNumber);
-        System.out.println("lastPage: " + lastPage);
-        System.out.println("number: " + number);
-
         if((number-1) >= firstPage){
             model.addAttribute("prevPage",number);
         }
@@ -76,6 +74,7 @@ public class AdminControll {
         model.addAttribute("countProducts",countProducts);
         model.addAttribute("allProducts", products);
         model.addAttribute("elements", elementsOnPage);
+        model.addAttribute("sortPages", sortPages);
         return "/admin";
     }
 
@@ -171,10 +170,11 @@ public class AdminControll {
 
     @GetMapping("/sortProduct")
     public String sortPtoduct (@RequestParam("sort") String sort, Model model){
-        List<Product> products = productService.productsSort(sort);
+        sortPages = sort;
+        List<Product> products = productService.showPage(0,elementsOnPage,sortPages);
         model.addAttribute("allProducts", products);
         model.addAttribute("elements", elementsOnPage);
-        return "/admin";
+        return "redirect:/showAllProducts";
     }
 
     @PostMapping("/edit")

@@ -34,15 +34,25 @@ public interface ProductDAO extends JpaRepository<Product, Integer>{
     @Query(value = "SELECT * FROM product LIMIT ?1, ?2", nativeQuery = true)
     List<Product> showPage(int page, int elements);
 
+    @Query(value = "SELECT * FROM product ORDER BY id LIMIT ?1, ?2", nativeQuery = true)
+    List<Product> idAsc(int page, int elements);
+
+    @Query(value = "SELECT * FROM product ORDER BY id DESC LIMIT ?1, ?2", nativeQuery = true)
+    List<Product> idDesc(int page, int elements);
+
+    @Query(value = "SELECT * FROM product ORDER BY model LIMIT ?1, ?2", nativeQuery = true)
+    List<Product> modelAsc(int page, int elements);
+
+    @Query(value = "SELECT * FROM product ORDER BY model DESC LIMIT ?1, ?2", nativeQuery = true)
+    List<Product> modelDesc(int page, int elements);
+
     @Query(value = "SELECT * FROM product ORDER BY price LIMIT ?1, ?2", nativeQuery = true)
-    List<Product> findPagePriceLessToBig(int page, int elements);
+    List<Product> priceAsc(int page, int elements);
 
     @Query(value = "SELECT * FROM product ORDER BY price DESC LIMIT ?1, ?2", nativeQuery = true)
-    List<Product> findPagePriceBigToLess(int page, int elements);
+    List<Product> priceDesc(int page, int elements);
 
     @Query(value = "SELECT COUNT(id) FROM product", nativeQuery = true)
     int countProduct();
 
-    @Query(value = "SELECT * FROM product ORDER BY price ", nativeQuery = true)
-    List<Product> findAllSortPriceLess();
 }
