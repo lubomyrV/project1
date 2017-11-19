@@ -27,7 +27,7 @@ public class AdminControll {
     private String defaultPath = new File("").getAbsolutePath()+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"static"+File.separator+"images"+File.separator;
 
     @GetMapping("/admin")
-    public String admin (Model model) {
+    public String admin () {
         return "/admin";
     }
 
