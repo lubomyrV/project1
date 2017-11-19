@@ -23,9 +23,7 @@ public class AdminControll {
     private StorageService storageService;
 
     private int elementsOnPage = 2;
-
     private String sortPages = "";
-
     private String defaultPath = new File("").getAbsolutePath()+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"static"+File.separator+"images"+File.separator;
 
     @GetMapping("/admin")
@@ -150,7 +148,6 @@ public class AdminControll {
         } else {
             realPath = product.getRealPath();
         }
-
         productService.updateProduct(id,model,price,description,image,realPath);
         return "redirect:/admin";
     }
@@ -201,6 +198,5 @@ public class AdminControll {
     public String login (){
         return "/login";
     }
-
 
 }
