@@ -77,7 +77,7 @@ public class AdminControll {
     }
 
     @PostMapping("/addProduct")
-    public String addProduct (@RequestParam("model") String model, @RequestParam("price") double price,
+    public String addProduct (@RequestParam("model") String model, @RequestParam("price") double price, @RequestParam("producer") String producer,
                               @RequestParam("description") String description, @RequestParam("file") MultipartFile multipartFile) {
         String fileName;
         String  path = System.getProperty("user.home") + File.separator + "images" + File.separator;
@@ -105,6 +105,7 @@ public class AdminControll {
         Product emptyProduct = new Product();
         emptyProduct.setModel(model);
         emptyProduct.setPrice(price);
+        emptyProduct.setProducer(producer);
         emptyProduct.setDescription(description);
         emptyProduct.setImage(File.separator + "img" + File.separator + fileName);
         emptyProduct.setRealPath(path + fileName);
@@ -113,7 +114,7 @@ public class AdminControll {
     }
 
     @PostMapping("/updateProduct")
-    public String updateProduct (@RequestParam("id") int id, @RequestParam("model") String model, @RequestParam("price") double price,
+    public String updateProduct (@RequestParam("id") int id, @RequestParam("model") String model, @RequestParam("price") double price, @RequestParam("producer") String producer,
                                  @RequestParam("description") String description, @RequestParam("image") String image, @RequestParam("file") MultipartFile multipartFile) {
         Product product = productService.findProductById(id);
         String fileName;
@@ -148,14 +149,33 @@ public class AdminControll {
         } else {
             realPath = product.getRealPath();
         }
-        productService.updateProduct(id,model,price,description,image,realPath);
-        return "redirect:/admin";
+        productService.updateProduct(id,model,price,producer,description,image,realPath);
+        return "redirect:/showAllProducts";
     }
 
     @GetMapping("/findProduct")
     public String findModel (@RequestParam String modelProduct, Model model){
         List<Product> productList = productService.findProductByModel(modelProduct);
         model.addAttribute("productList", productList);
+        return "/admin";
+    }
+
+    @GetMapping("/findProducer")
+    public String findProducer (@RequestParam(value = "producer1", required = false) String producer1, @RequestParam(value = "producer2", required = false) String producer2,
+                                @RequestParam(value = "producer3", required = false) String producer3, @RequestParam(value = "producer4", required = false) String producer4,
+                                @RequestParam(value = "producer5", required = false) String producer5, @RequestParam(value = "producer6", required = false) String producer6,
+                                @RequestParam(value = "producer7", required = false) String producer7, @RequestParam(value = "producer8", required = false) String producer8,
+                                Model model){
+        List<Product> productList = productService.findProducer(producer1,producer2,producer3,producer4,producer5,producer6,producer7,producer8);
+        model.addAttribute("productList", productList);
+        model.addAttribute("producer1",producer1);
+        model.addAttribute("producer2",producer2);
+        model.addAttribute("producer3",producer3);
+        model.addAttribute("producer4",producer4);
+        model.addAttribute("producer5",producer5);
+        model.addAttribute("producer6",producer6);
+        model.addAttribute("producer7",producer7);
+        model.addAttribute("producer8",producer8);
         return "/admin";
     }
 

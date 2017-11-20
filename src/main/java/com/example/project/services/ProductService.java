@@ -11,7 +11,7 @@ public interface ProductService {
 
     void add(Product product);
 
-    void updateProduct(int id, String model, double price, String description, String image, String realPath);
+    void updateProduct(int id, String model, double price, String producer, String description, String image, String realPath);
 
     void deleteProductById(Integer id);
 
@@ -38,4 +38,6 @@ public interface ProductService {
     List<Integer> getNumberPagesList(int elements);
 
     int getNumberEmenets();
+
+    List<Product> findProducer(String producer1, String producer2, String producer3, String producer4, String producer5, String producer6, String producer7, String producer8);
 }

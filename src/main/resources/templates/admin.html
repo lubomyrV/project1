@@ -11,46 +11,65 @@
     <p><a href="/"> Index page </a></p>
     <p><a href="/newProduct"> Add new product </a></p>
     <p><a href="/showAllProducts"> Show all products </a></p>
+
     <form action="findProduct" method="get">
         <p>Find product by model:</p>
         <p>Model <input type="text" name="modelProduct" required="required"/>
         <input type="submit" value="find" /></p>
     </form>
+    <br />
+    <form action="/findProducer" method="get">
+        <p>Find product by producer:</p>
+        <input type="checkbox" name="producer1" value="Acer" th:checked="${producer1}" />Acer<br />
+        <input type="checkbox" name="producer2" value="Apple" th:checked="${producer2}"/>Apple<br />
+        <input type="checkbox" name="producer3" value="Asus" th:checked="${producer3}"/>Asus<br />
+        <input type="checkbox" name="producer4" value="Dell" th:checked="${producer4}"/>Dell<br />
+        <input type="checkbox" name="producer5" value="HP" th:checked="${producer5}"/>HP<br />
+        <input type="checkbox" name="producer6" value="Huawei" th:checked="${producer6}"/>Huawei<br />
+        <input type="checkbox" name="producer7" value="Lenovo" th:checked="${producer7}"/>Lenovo<br />
+        <input type="checkbox" name="producer8" value="MSI" th:checked="${producer8}"/>MSI<br />
+        <input type="submit" value="find" />
+    </form>
 
     <div data-th-if="${allProducts}" >
 
-    <form action="/elements" method="get" >
-        <p>Elements on page: <span th:text="${elements}"></span></p>
-        <select name="elements">
-            <option value="2" >2</option>
-            <option value="3" >3</option>
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="25" >25</option>
-        </select>
-        <input type="submit" value="apply"/>
-    </form>
-    <form action="/sortProduct" method="get" >
-        <div data-th-if="${sortPages}" ><p th:text="'Sort products by '+${sortPages}"></p></div>
-        <select name="sort">
-            <option value="idAsc" >id asc</option>
-            <option value="idDesc" >id desc</option>
-            <option value="modelAsc">Product model a - z</option>
-            <option value="modelDesc">Product model z - a</option>
-            <option value="priceAsc" >Less to big price</option>
-            <option value="priceDesc">Big to less price</option>
-        </select>
-        <input type="submit" value="sort"/>
-    </form>
-    <br />
+        <form action="/elements" method="get" >
+            <p>Elements on page: <span th:text="${elements}"></span></p>
+            <select name="elements">
+                <option th:value="${elements}" ><span th:text="${elements}"></span></option>
+                <option value="2" >2</option>
+                <option value="3" >3</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25" >25</option>
+            </select>
+            <input type="submit" value="apply"/>
+        </form>
+
+        <form action="/sortProduct" method="get" >
+            <div data-th-if="${sortPages}" ><p th:text="'Sort products by '+${sortPages}"></p></div>
+            <select name="sort">
+                <option th:value="${sortPages}" ><span th:text="${sortPages}"></span></option>
+                <option value="idAsc" >id asc</option>
+                <option value="idDesc" >id desc</option>
+                <option value="modelAsc">Product model a - z</option>
+                <option value="modelDesc">Product model z - a</option>
+                <option value="priceAsc" >Less to big price</option>
+                <option value="priceDesc">Big to less price</option>
+            </select>
+            <input type="submit" value="sort"/>
+        </form>
+        <br />
+
         <div data-th-if="${countProducts}" ><p th:text="'Count products: '+${countProducts}"></p></div>
+
         <div data-th-if="${numberPagesList}" >
 
-        <span data-th-if="${prevPage}" ><a th:href="'page-'+${prevPage}"> prev </a></span>
-        <th:div th:each=" page:${numberPagesList}">
-             <a th:href="'page-'+${page+1}"><span th:text="${page+1}"></span></a>
-        </th:div>
-        <span data-th-if="${nextPage}" ><a th:href="'page-'+${nextPage+1}"> next </a></span>
+            <span data-th-if="${prevPage}" ><a th:href="'page-'+${prevPage}"> prev </a></span>
+            <th:div th:each=" page:${numberPagesList}">
+                <a th:href="'page-'+${page+1}"><span th:text="${page+1}"></span></a>
+            </th:div>
+            <span data-th-if="${nextPage}" ><a th:href="'page-'+${nextPage+1}"> next </a></span>
 
 
         </div>
@@ -76,7 +95,7 @@
     <th:block th:each=" product:${allProducts}">
         <img th:src="${product.image}" height="100" />
         <p><a th:href="'/admin/'+${product.model}+'-'+${product.id}"><span th:text="${product.model}"></span></a></p>
-        <p th:text=" 'Id: ' + ${product.id} + ', Model: '+ ${product.model} +',  Price: ' + ${product.price} + ', Description: '+ ${product.description}"/>
+        <p th:text=" 'Id: ' + ${product.id} + ', Model: '+ ${product.model} +',  Price: ' + ${product.price} +', Producer: '+ ${product.producer} +', Description: '+ ${product.description}"/>
         <form action="/edit" method="post">
             <input type="hidden" name="id" th:value="${product.id}"  />
             <input type="submit" value="edit" />

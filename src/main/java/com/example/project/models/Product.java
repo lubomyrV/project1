@@ -13,6 +13,7 @@ public class Product {
 
     private String model;
     private double price;
+    private String producer;
     private String description;
     private String image;
     private String realPath;
@@ -42,11 +43,19 @@ public class Product {
         this.image = image;
     }
 
-    public Integer getId() {
+    public Product(String model, double price, String producer, String description, String image) {
+        this.model = model;
+        this.price = price;
+        this.producer = producer;
+        this.description = description;
+        this.image = image;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -58,12 +67,20 @@ public class Product {
         this.model = model;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getProducer() {
+        return producer;
+    }
+
+    public void setProducer(String producer) {
+        this.producer = producer;
     }
 
     public String getDescription() {
@@ -82,7 +99,6 @@ public class Product {
         this.image = image;
     }
 
-
     public String getRealPath() {
         return realPath;
     }
@@ -97,6 +113,7 @@ public class Product {
                 "id=" + id +
                 ", model='" + model + '\'' +
                 ", price=" + price +
+                ", producer='" + producer + '\'' +
                 ", description='" + description + '\'' +
                 ", image='" + image + '\'' +
                 ", realPath='" + realPath + '\'' +
