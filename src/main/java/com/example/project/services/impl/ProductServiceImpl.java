@@ -161,8 +161,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findProducer(String producer1, String producer2, String producer3, String producer4, String producer5, String producer6, String producer7, String producer8) {
-        return productDAO.findProducer(producer1,producer2,producer3,producer4,producer5,producer6,producer7,producer8);
+    public List<Product> findProducer(String producer1, String producer2, String producer3, String producer4, String producer5,
+                                      String producer6, String producer7, String producer8, String priceFrom, String priceTo) {
+        double valueFrom;
+        double valueTo;
+        if(priceFrom.isEmpty()){
+            priceFrom = "0";
+        }
+        if(priceTo.isEmpty()){
+            priceTo = ""+Double.MAX_VALUE;
+        }
+        valueFrom = Double.parseDouble(priceFrom);
+        valueTo = Double.parseDouble(priceTo);
+        return productDAO.findProducer(producer1,producer2,producer3,producer4,producer5,producer6,producer7,producer8,valueFrom,valueTo);
     }
 
 }

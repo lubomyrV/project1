@@ -55,6 +55,6 @@ public interface ProductDAO extends JpaRepository<Product, Integer>{
     @Query(value = "SELECT COUNT(id) FROM product", nativeQuery = true)
     int countProduct();
 
-    @Query(value = "SELECT * FROM product WHERE producer = ?1 OR producer = ?2 OR producer = ?3 OR producer = ?4 OR producer = ?5 OR producer = ?6 OR producer = ?7 OR producer = ?8", nativeQuery = true)
-    List<Product> findProducer(String producer1, String producer2, String producer3, String producer4, String producer5, String producer6, String producer7, String producer8);
+    @Query(value = "SELECT * FROM product WHERE (producer = ?1 OR producer = ?2 OR producer = ?3 OR producer = ?4 OR producer = ?5 OR producer = ?6 OR producer = ?7 OR producer = ?8) AND (price BETWEEN ?9 AND ?10)", nativeQuery = true)
+    List<Product> findProducer(String producer1, String producer2, String producer3, String producer4, String producer5, String producer6, String producer7, String producer8, double valueFrom, double valueTo);
 }

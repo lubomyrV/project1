@@ -39,5 +39,6 @@ public interface ProductService {
 
     int getNumberEmenets();
 
-    List<Product> findProducer(String producer1, String producer2, String producer3, String producer4, String producer5, String producer6, String producer7, String producer8);
+    List<Product> findProducer(String producer1, String producer2, String producer3, String producer4, String producer5,
+                               String producer6, String producer7, String producer8, String priceFrom, String priceTo);
 }

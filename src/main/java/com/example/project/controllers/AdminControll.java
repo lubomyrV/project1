@@ -160,13 +160,17 @@ public class AdminControll {
         return "/admin";
     }
 
-    @GetMapping("/findProducer")
+    @GetMapping("/search")
     public String findProducer (@RequestParam(value = "producer1", required = false) String producer1, @RequestParam(value = "producer2", required = false) String producer2,
                                 @RequestParam(value = "producer3", required = false) String producer3, @RequestParam(value = "producer4", required = false) String producer4,
                                 @RequestParam(value = "producer5", required = false) String producer5, @RequestParam(value = "producer6", required = false) String producer6,
                                 @RequestParam(value = "producer7", required = false) String producer7, @RequestParam(value = "producer8", required = false) String producer8,
-                                Model model){
-        List<Product> productList = productService.findProducer(producer1,producer2,producer3,producer4,producer5,producer6,producer7,producer8);
+                                @RequestParam(value = "priceFrom", required=false) String priceFrom, @RequestParam(value = "priceTo", required=false) String priceTo, Model model){
+
+
+        System.out.println("priceFrom "+priceFrom);
+        System.out.println("priceTo "+priceTo);
+        List<Product> productList = productService.findProducer(producer1,producer2,producer3,producer4,producer5,producer6,producer7,producer8,priceFrom,priceTo);
         model.addAttribute("productList", productList);
         model.addAttribute("producer1",producer1);
         model.addAttribute("producer2",producer2);
@@ -176,6 +180,8 @@ public class AdminControll {
         model.addAttribute("producer6",producer6);
         model.addAttribute("producer7",producer7);
         model.addAttribute("producer8",producer8);
+        model.addAttribute("priceFrom",priceFrom);
+        model.addAttribute("priceTo",priceTo);
         return "/admin";
     }
 
