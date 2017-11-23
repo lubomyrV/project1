@@ -173,7 +173,10 @@ public class ProductServiceImpl implements ProductService {
         }
         valueFrom = Double.parseDouble(priceFrom);
         valueTo = Double.parseDouble(priceTo);
-        return productDAO.findProducer(producer1,producer2,producer3,producer4,producer5,producer6,producer7,producer8,valueFrom,valueTo);
+
+        List<Product> productList = productDAO.findProduct(producer1, producer2, producer3, producer4, producer5, producer6, producer7, producer8, valueFrom, valueTo);
+
+        return productList;
     }
 
 }

@@ -24,6 +24,7 @@ public class AdminControll {
 
     private int elementsOnPage = 2;
     private String sortPages = "idAsc";
+    private String sortName = "id asc";
     private String defaultPath = new File("").getAbsolutePath()+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"static"+File.separator+"images"+File.separator;
 
     @GetMapping("/admin")
@@ -49,7 +50,7 @@ public class AdminControll {
         model.addAttribute("countProducts",countProducts);
         model.addAttribute("allProducts", products);
         model.addAttribute("elements", elementsOnPage);
-        model.addAttribute("sortPages", sortPages);
+        model.addAttribute("sortName", sortName);
         return "/admin";
     }
 
@@ -72,7 +73,7 @@ public class AdminControll {
         model.addAttribute("countProducts",countProducts);
         model.addAttribute("allProducts", products);
         model.addAttribute("elements", elementsOnPage);
-        model.addAttribute("sortPages", sortPages);
+        model.addAttribute("sortName", sortName);
         return "/admin";
     }
 
@@ -167,9 +168,6 @@ public class AdminControll {
                                 @RequestParam(value = "producer7", required = false) String producer7, @RequestParam(value = "producer8", required = false) String producer8,
                                 @RequestParam(value = "priceFrom", required=false) String priceFrom, @RequestParam(value = "priceTo", required=false) String priceTo, Model model){
 
-
-        System.out.println("priceFrom "+priceFrom);
-        System.out.println("priceTo "+priceTo);
         List<Product> productList = productService.findProducer(producer1,producer2,producer3,producer4,producer5,producer6,producer7,producer8,priceFrom,priceTo);
         model.addAttribute("productList", productList);
         model.addAttribute("producer1",producer1);
@@ -193,6 +191,31 @@ public class AdminControll {
 
     @GetMapping("/sortProduct")
     public String sortPtoduct (@RequestParam("sort") String sort, Model model){
+
+        switch(sort) {
+            case "idAsc":
+                sortName = "id asc";
+                break;
+            case "idDesc":
+                sortName = "id desc";
+                break;
+            case "modelAsc":
+                sortName = "Product model a - z";
+                break;
+            case "modelDesc":
+                sortName = "Product model z - a";
+                break;
+            case "priceAsc":
+                sortName = "Less to big price";
+                break;
+            case "priceDesc":
+                sortName = "Big to less price";
+                break;
+            default:
+                sortName = "id asc";
+                break;
+        }
+
         sortPages = sort;
         List<Product> products = productService.showPage(0,elementsOnPage,sortPages);
         model.addAttribute("allProducts", products);

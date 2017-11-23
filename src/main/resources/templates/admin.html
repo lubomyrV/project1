@@ -37,7 +37,7 @@
     <div data-th-if="${allProducts}" >
 
         <form action="/elements" method="get" >
-            <p>Elements on page: <span th:text="${elements}"></span></p>
+            <p>Elements on page
             <select name="elements">
                 <option th:value="${elements}" ><span th:text="${elements}"></span></option>
                 <option value="2" >2</option>
@@ -46,13 +46,13 @@
                 <option value="10">10</option>
                 <option value="25" >25</option>
             </select>
-            <input type="submit" value="apply"/>
+            <input type="submit" value="apply"/></p>
         </form>
 
         <form action="/sortProduct" method="get" >
-            <div data-th-if="${sortPages}" ><p th:text="'Sort products by '+${sortPages}"></p></div>
+            <p>Sort products by
             <select name="sort">
-                <option th:value="${sortPages}" ><span th:text="${sortPages}"></span></option>
+                <option th:value="${sortName}" ><span th:text="${sortName}"></span></option>
                 <option value="idAsc" >id asc</option>
                 <option value="idDesc" >id desc</option>
                 <option value="modelAsc">Product model a - z</option>
@@ -60,7 +60,7 @@
                 <option value="priceAsc" >Less to big price</option>
                 <option value="priceDesc">Big to less price</option>
             </select>
-            <input type="submit" value="sort"/>
+            <input type="submit" value="sort"/></p>
         </form>
         <br />
 
