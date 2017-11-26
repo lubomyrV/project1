@@ -18,6 +18,11 @@ import java.util.List;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
+    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/img/**").addResourceLocations("file:" + System.getProperty("user.home") + File.separator + "images" + File.separator);
+    }
+
+    @Override
     public void configurePathMatch(PathMatchConfigurer pathMatchConfigurer) {
 
     }
@@ -45,11 +50,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry interceptorRegistry) {
 
-    }
-
-    @Override
-    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/img/**").addResourceLocations("file:" + System.getProperty("user.home") + File.separator + "images" + File.separator);
     }
 
     @Override

@@ -17,6 +17,17 @@
             <p>Id <input type="text" name="id" th:value="${product.id}" readonly="readonly"/></p>
             <p>Model <input type="text" name="model" th:value="${product.model}" /></p>
             <p>Price <input type="text" name="price" th:value="${product.price}" /></p>
+            <p>Producer <select name="producer" >
+                <option th:value="${product.producer}" ><span th:text="${product.producer}"></span></option>
+                <option value="Acer" >Acer</option>
+                <option value="Apple" >Apple</option>
+                <option value="Asus">Asus</option>
+                <option value="Dell">Dell</option>
+                <option value="HP" >HP</option>
+                <option value="Huawei" >Huawei</option>
+                <option value="Lenovo" >Lenovo</option>
+                <option value="MSI" >MSI</option>
+            </select></p>
             <p>Description</p>
             <p><textarea rows="4" cols="35" name="description" th:text="${product.description}" /></p>
             <p>Image <input type="text" name="image" th:value="${product.image}" readonly="readonly"/></p>
