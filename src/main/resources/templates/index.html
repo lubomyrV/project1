@@ -1,14 +1,28 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8"/>
     <title>Title</title>
     <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+    <span th:hidden="${principal}"/>
     <h2>Index page</h2>
 
+    <div sec:authorize="isAuthenticated()">
+        This content is only shown to <b>authenticated users</b>.
+    </div>
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        This content is only shown to <b>administrators</b>.
+    </div>
+    <div sec:authorize="hasRole('ROLE_USER')">
+        This content is only shown to <b>users</b>.
+    </div>
+
+    <p><a href="/auth"> Login </a></p>
     <p><a href="/admin"> admin page </a></p>
+    <p><a href="/mypage"> my page </a></p>
 
     <form action="/lprice" method="get">
         <p>Find laptop where price is less or equal</p>

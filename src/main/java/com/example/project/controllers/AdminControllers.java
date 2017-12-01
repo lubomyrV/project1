@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class AdminControll {
+public class AdminControllers {
 
     @Autowired
     private ProductService productService;
@@ -243,16 +243,6 @@ public class AdminControll {
         Product product = productService.findProductById(id);
         model.addAttribute("product", product);
         return "adminproduct";
-    }
-
-    @GetMapping("/logout")
-    public String logout (){
-        return "/index";
-    }
-
-    @GetMapping("/login")
-    public String login (){
-        return "/login";
     }
 
 }

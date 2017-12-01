@@ -11,11 +11,11 @@
         You have been logged out.
     </div>
     <form th:action="@{/login}" method="post">
-        <div><label> User Name : <input type="text" name="username"/> </label></div>
-        <div><label> Password: <input type="password" name="password"/> </label></div>
+        <div><span> User Name : <input type="text" name="username"/> </span></div>
+        <div><span> Password: <input type="password" name="password"/> </span></div>
         <div><input type="submit" value="Sign In"/></div>
     </form>
-    <br/>
-    <a href="/"> index page </a>
+    <p><a href="/registration"> Registration </a></p>
+    <p><a href="/"> Index page </a></p>
 </body>
 </html>

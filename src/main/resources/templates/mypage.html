@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8"/>
+    <title>My page</title>
+</head>
+<body>
+    <h1>My page</h1>
+    <p th:text="'name: '+${userName}"></p>
+    <p th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</p>
+    <p><a href="/logout"> Sign out </a></p>
+    <p><a href="/"> Index page </a></p>
+
+</body>
+</html>
