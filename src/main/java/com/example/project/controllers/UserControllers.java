@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.security.Principal;
+
 @Controller
 public class UserControllers {
     @Autowired
@@ -17,9 +19,10 @@ public class UserControllers {
     private UserService userService;
 
     @GetMapping("/mypage")
-    public String mypage (String username, Model model) {
-        User userName = userService.findByUserName(username);
-        model.addAttribute("username", userName);
+    public String mypage ( Model model, Principal principal) {
+        String username = principal.getName();
+        User user = userService.findByUserName(username);
+        model.addAttribute("user", user);
         return "mypage";
     }
 }

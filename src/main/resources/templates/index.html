@@ -20,9 +20,14 @@
         This content is only shown to <b>users</b>.
     </div>
 
-    <p><a href="/auth"> Login </a></p>
-    <p><a href="/admin"> admin page </a></p>
-    <p><a href="/mypage"> my page </a></p>
+    <span th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">
+        <p><a href="/admin"> admin page </a></p>
+    </span>
+    <span th:if="${#httpServletRequest.isUserInRole('ROLE_USER')}">
+        <p><a href="/mypage"> my page </a></p>
+    </span>
+
+    <p th:if="${!#httpServletRequest.isUserInRole('ROLE_ADMIN') and !#httpServletRequest.isUserInRole('ROLE_USER')}"><a href="/auth"> Login </a></p>
 
     <form action="/lprice" method="get">
         <p>Find laptop where price is less or equal</p>
