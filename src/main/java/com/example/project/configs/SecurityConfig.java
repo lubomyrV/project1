@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -40,8 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                     .usernameParameter("username")
                     .passwordParameter("password").and()
                 .logout()
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).and()
-                .csrf().and()
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/").and()
+                .csrf().disable()
                 .exceptionHandling()
                     .accessDeniedPage("/accessdenied");
     }

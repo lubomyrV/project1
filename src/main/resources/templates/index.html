@@ -7,27 +7,17 @@
     <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-    <span th:hidden="${principal}"/>
     <h2>Index page</h2>
-
-    <div sec:authorize="isAuthenticated()">
-        This content is only shown to <b>authenticated users</b>.
+    <!--<span th:hidden="${principal}"/>-->
+    <div sec:authorize="!isAuthenticated()">
+        <p><a href="/auth"> Login </a></p>
     </div>
     <div sec:authorize="hasRole('ROLE_ADMIN')">
-        This content is only shown to <b>administrators</b>.
+        <p><a href="/admin"> admin page </a></p>
     </div>
     <div sec:authorize="hasRole('ROLE_USER')">
-        This content is only shown to <b>users</b>.
-    </div>
-
-    <span th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">
-        <p><a href="/admin"> admin page </a></p>
-    </span>
-    <span th:if="${#httpServletRequest.isUserInRole('ROLE_USER')}">
         <p><a href="/mypage"> my page </a></p>
-    </span>
-
-    <p th:if="${!#httpServletRequest.isUserInRole('ROLE_ADMIN') and !#httpServletRequest.isUserInRole('ROLE_USER')}"><a href="/auth"> Login </a></p>
+    </div>
 
     <form action="/lprice" method="get">
         <p>Find laptop where price is less or equal</p>

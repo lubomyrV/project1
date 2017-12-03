@@ -24,7 +24,7 @@ public class MainControllers {
     public String index (Model model, Principal principal) {
         List<Product> products = productService.findAll();
         model.addAttribute("allProducts", products);
-        model.addAttribute("principal", principal);
+//        model.addAttribute("principal", principal);
         return "index";
     }
 
