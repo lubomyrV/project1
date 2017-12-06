@@ -1,8 +1,11 @@
 package com.example.project.controllers;
 
+import com.example.project.models.Authority;
 import com.example.project.models.Product;
+import com.example.project.models.User;
 import com.example.project.services.ProductService;
 import com.example.project.services.StorageService;
+import com.example.project.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +25,9 @@ public class AdminControllers {
     @Autowired
     private StorageService storageService;
 
+    @Autowired
+    private UserService userService;
+
     private int elementsOnPage = 2;
     private String sortPages = "idAsc";
     private String sortName = "id asc";
@@ -35,6 +41,16 @@ public class AdminControllers {
     @GetMapping("/admin/newProduct")
     public String newProduct () {
         return "/newproduct";
+    }
+
+    @GetMapping("/admin/showAllUsers")
+    public String showAllUsers (Model model) {
+        List<User> users = userService.findAll();
+        long countUsers = userService.countUsers();
+
+        model.addAttribute("users",users);
+        model.addAttribute("countUsers", countUsers);
+        return "/admin";
     }
 
     @GetMapping("/admin/showAllProducts")
@@ -221,6 +237,34 @@ public class AdminControllers {
         model.addAttribute("allProducts", products);
         model.addAttribute("elements", elementsOnPage);
         return "redirect:/admin/showAllProducts";
+    }
+
+    @GetMapping("/admin/editUser")
+    public String editUser(@RequestParam int id, Model model){
+        User userOld = userService.findById(id);
+        model.addAttribute("userOld", userOld);
+        return "edituser";
+    }
+
+    @PostMapping("/admin/updateUser")
+    public String updateProduct (@RequestParam("id") int id,
+                                 @RequestParam("username") String username,
+                                 @RequestParam("email") String email,
+                                 @RequestParam("role") String role) {
+        String authority;
+        switch(role) {
+            case "user":
+                authority = ""+Authority.ROLE_USER;
+                break;
+            case "moderator":
+                authority = ""+Authority.ROLE_MODERATOR;
+                break;
+            default:
+                authority = ""+Authority.ROLE_USER;
+                break;
+        }
+        userService.updateUser(id,username,email,authority);
+        return "redirect:/admin/showAllUsers";
     }
 
     @GetMapping("/admin/edit")

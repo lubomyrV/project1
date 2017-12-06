@@ -33,8 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/", "/index", "/{productModel}-{id}", "/lprice", "/reset", "/registration", "/addUser" ).permitAll()
-                .antMatchers("/admin/**").access("hasRole('ADMIN')")
-                .antMatchers("/mypage/**").access("hasRole('USER')")
+                .antMatchers("/admin/**").access("hasAnyRole('ADMIN','MODERATOR')")
+                .antMatchers("/mypage/**").access("hasAnyRole('USER','MODERATOR')")
                 .anyRequest().authenticated().and()
                 .formLogin()
                     .loginPage("/login").permitAll()
@@ -51,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     public void configureGlobal(AuthenticationManagerBuilder auth, AuthenticationProvider provider) throws Exception {
         InMemoryUserDetailsManagerConfigurer inMemory = new InMemoryUserDetailsManagerConfigurer<AuthenticationManagerBuilder>();
         inMemory.withUser("r").password("r").roles("ADMIN").and()
+                .withUser("m").password("m").roles("MODERATOR").and()
                 .withUser("u").password("u").roles("USER").and()
                 .configure(auth);
         auth.authenticationProvider(provider);

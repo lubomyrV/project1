@@ -9,14 +9,14 @@
     <h2>Admin page</h2>
 
     <span sec:authorize="isAuthenticated()">
-                | Logged user: <span sec:authentication="name"></span> |
-                Roles: <span sec:authentication="principal.authorities"></span> |
+        | Logged : <span sec:authentication="name"></span> | Role: <span sec:authentication="principal.authorities"></span> |
     </span>
 
     <p><a href="/logout"> Sign out </a></p>
     <p><a href="/"> Index page </a></p>
     <p><a href="/admin/newProduct"> Add new product </a></p>
     <p><a href="/admin/showAllProducts"> Show all products </a></p>
+    <p><a href="/admin/showAllUsers"> Show all users </a></p>
 
     <form action="/admin/findProduct" method="get">
         <p>Find product by model:</p>
@@ -113,6 +113,16 @@
         <form action="/admin/delete" method="post">
             <input type="hidden" name="id" th:value="${product.id}"  />
             <input type="submit" value="delete" />
+        </form>
+        <hr/>
+    </th:block>
+
+    <div data-th-if="${countUsers}" ><p th:text="'Number of users: '+${countUsers}"></p></div>
+    <th:block th:each=" user:${users}">
+        <p th:text="'Id: ' + ${user.id} + ', Username: ' + ${user.username} + ', E-mail: '+ ${user.email} + ', Role: '+ ${user.authority}" />
+        <form action="/admin/editUser" method="get">
+            <input type="hidden" name="id" th:value="${user.id}"  />
+            <input type="submit" value="edit" />
         </form>
         <hr/>
     </th:block>

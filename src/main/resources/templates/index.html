@@ -15,6 +15,10 @@
     <div sec:authorize="hasRole('ROLE_ADMIN')">
         <p><a href="/admin"> admin page </a></p>
     </div>
+    <div sec:authorize="hasRole('ROLE_MODERATOR')">
+        <p><a href="/admin"> admin page </a></p>
+        <p><a href="/mypage"> my page </a></p>
+    </div>
     <div sec:authorize="hasRole('ROLE_USER')">
         <p><a href="/mypage"> my page </a></p>
     </div>
