@@ -11,7 +11,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-
 public interface ProductDAO extends JpaRepository<Product, Integer>{
 
     @Modifying(clearAutomatically = true)

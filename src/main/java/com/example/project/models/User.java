@@ -6,6 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 @Entity
 public class User implements UserDetails{
@@ -14,15 +16,27 @@ public class User implements UserDetails{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name="username", unique = true, length = 32)
     private String username;
     private String password;
     private String email;
+
+    @ElementCollection
+    @MapKeyColumn(name="basket_key", unique = false, length = 190)
+    @Column(name="basket_value")
+    @CollectionTable(name="user_basket", joinColumns=@JoinColumn(name="user_id", unique = false))
+    private Map<String, Integer> basket;
+
+    @ElementCollection
+    @MapKeyColumn(name="order_key", unique = false, length = 190)
+    @Column(name="order_value")
+    @CollectionTable(name="user_order", joinColumns=@JoinColumn(name="user_id", unique = false))
+    private Map<String,Integer> order;
 
     private boolean accountNonExpired = true;
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;
     private boolean enabled = true;
-
     @Enumerated(EnumType.STRING)
     private Authority authority = Authority.ROLE_USER;
 
@@ -57,6 +71,22 @@ public class User implements UserDetails{
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Map<String, Integer> getBasket() {
+        return basket;
+    }
+
+    public void setBasket(Map<String, Integer> basket) {
+        this.basket = basket;
+    }
+
+    public Map<String, Integer> getOrder() {
+        return order;
+    }
+
+    public void setOrder(Map<String, Integer> order) {
+        this.order = order;
     }
 
     public void setAccountNonExpired(boolean accountNonExpired) {

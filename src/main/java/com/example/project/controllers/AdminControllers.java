@@ -47,7 +47,6 @@ public class AdminControllers {
     public String showAllUsers (Model model) {
         List<User> users = userService.findAll();
         long countUsers = userService.countUsers();
-
         model.addAttribute("users",users);
         model.addAttribute("countUsers", countUsers);
         return "/admin";

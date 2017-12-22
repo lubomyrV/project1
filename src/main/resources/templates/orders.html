@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Orders</title>
+</head>
+<body>
+    <h1>Your orders</h1>
+    <th:block th:each="thisUser:${user}">
+        <p th:text="'username: '+ ${thisUser.username}"/>
+    </th:block>
+
+        <span th:each="product : ${productList}">
+            <p th:text="'product: '+${product.model}"></p>
+        </span>
+        <span th:each="items : ${itemsList}">
+            <p th:text="'items: '+${items}"></p>
+        </span>
+        <span th:each="data : ${dataList}">
+            <p th:text="'data: '+${data}"></p>
+        </span>
+
+
+    <p><a href="/"> Index page </a></p>
+</body>
+</html>
+
+

@@ -12,7 +12,6 @@
         | Logged : <span sec:authentication="name"></span> | Role: <span sec:authentication="principal.authorities"></span> |
     </span>
 
-    <p><a href="/logout"> Sign out </a></p>
     <p><a href="/"> Index page </a></p>
     <p><a href="/admin/newProduct"> Add new product </a></p>
     <p><a href="/admin/showAllProducts"> Show all products </a></p>
@@ -73,14 +72,11 @@
         <div data-th-if="${countProducts}" ><p th:text="'Count products: '+${countProducts}"></p></div>
 
         <div data-th-if="${numberPagesList}" >
-
             <span data-th-if="${prevPage}" ><a th:href="'/admin/page-'+${prevPage}"> prev </a></span>
             <th:div th:each=" page:${numberPagesList}">
                 <a th:href="'page-'+${page+1}"><span th:text="${page+1}"></span></a>
             </th:div>
             <span data-th-if="${nextPage}" ><a th:href="'/admin/page-'+${nextPage+1}"> next </a></span>
-
-
         </div>
 
     </div>

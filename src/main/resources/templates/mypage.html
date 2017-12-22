@@ -8,12 +8,9 @@
     <h1>My page</h1>
 
     <th:block th:each=" thisUser:${user}">
-        <p th:text="'username: '+ ${thisUser.username} +',  password: ' + ${thisUser.password} + ', email: '+ ${thisUser.email}"/>
+        <p th:text="'username: '+ ${thisUser.username} +', email: '+ ${thisUser.email}"/>
     </th:block>
 
-    <p th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</p>
-
-    <p><a href="/logout"> Sign out </a></p>
     <p><a href="/"> Index page </a></p>
 
 </body>

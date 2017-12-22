@@ -8,19 +8,32 @@
 </head>
 <body>
     <h2>Index page</h2>
-    <!--<span th:hidden="${principal}"/>-->
+
+    <div sec:authorize="isAuthenticated()">
+        <p th:inline="text">Hello [[${#httpServletRequest.remoteUser}]].</p>
+        <p><a href="/logout"> Logout </a></p>
+    </div>
+
     <div sec:authorize="!isAuthenticated()">
         <p><a href="/auth"> Login </a></p>
+        <p><a href="/registration"> Registration </a></p>
     </div>
+
     <div sec:authorize="hasRole('ROLE_ADMIN')">
-        <p><a href="/admin"> admin page </a></p>
+        <p><a href="/admin"> Admin page </a></p>
     </div>
+
     <div sec:authorize="hasRole('ROLE_MODERATOR')">
-        <p><a href="/admin"> admin page </a></p>
-        <p><a href="/mypage"> my page </a></p>
+        <p><a href="/admin"> Admin page </a></p>
+        <p><a href="/mypage"> My page </a></p>
+        <p><a href="/basket"> Basket </a></p>
+        <p><a href="/orders"> Orders </a></p>
     </div>
+
     <div sec:authorize="hasRole('ROLE_USER')">
-        <p><a href="/mypage"> my page </a></p>
+        <p><a href="/mypage"> My page </a></p>
+        <p><a href="/basket"> Basket </a></p>
+        <p><a href="/orders"> Orders </a></p>
     </div>
 
     <form action="/lprice" method="get">
@@ -29,14 +42,22 @@
         <input type="text" name="price" pattern="[0-9.]+" title="Please enter only positive numbers"/>
         <input type="submit" value="find"/>
     </form>
+
     <form action="/reset" method="get">
         <input type="submit" value="reset filter"/>
     </form>
+
     <br />
     <th:block th:each=" product:${listProducts}">
         <img th:src="${product.image}" height="100" />
         <p><a th:href="${product.model}+'-'+${product.id+42}"><span th:text="${product.model}"></span></a></p>
         <p th:text="'Model: '+ ${product.model} +',  Price: ' + ${product.price} + ', Description: '+ ${product.description}"/>
+        <div sec:authorize="hasAnyRole('ROLE_USER','ROLE_MODERATOR')">
+            <form action="/order" method="post">
+                <input type="hidden" name="productId" th:value="${product.id}"  />
+                <input type="submit" value="add to basket" />
+            </form>
+        </div>
         <hr />
     </th:block>
 
@@ -44,6 +65,12 @@
         <img th:src="${product.image}" height="100" />
         <p><a th:href="${product.model}+'-'+${product.id+42}"><span th:text="${product.model}"></span></a></p>
         <p th:text="'Model: '+ ${product.model} +',  Price: ' + ${product.price} + ', Description: '+ ${product.description}"/>
+        <div sec:authorize="hasAnyRole('ROLE_USER','ROLE_MODERATOR')">
+            <form action="/order" method="post">
+                <input type="hidden" name="productId" th:value="${product.id}"  />
+                <input type="submit" value="add to basket" />
+            </form>
+        </div>
         <hr />
     </th:block>
 
