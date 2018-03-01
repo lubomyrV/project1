@@ -1,10 +1,7 @@
 package com.example.project.services;
 
-import com.example.project.models.Product;
 import com.example.project.models.User;
-
 import java.util.List;
-import java.util.Map;
 
 public interface UserService {
     void save(User user);

@@ -1,5 +1,6 @@
 package com.example.project.controllers;
 
+import com.example.project.models.Orders;
 import com.example.project.models.Product;
 import com.example.project.models.User;
 import com.example.project.services.ProductService;
@@ -106,6 +107,7 @@ public class UserControllers {
         Map<String, Integer> userBasket = user.getBasket();
         Map<String, Integer> userOrder = user.getOrder();
 
+
         System.out.println();
         System.out.println("Old userOrder: "+userOrder);
         for (Map.Entry<String, Integer> basket : userBasket.entrySet()) {
@@ -129,40 +131,30 @@ public class UserControllers {
         String username = principal.getName();
         User user = userService.findByUserName(username);
         Map<String, Integer> userOrders = user.getOrder();
+        String productN = null;
+        String date = null;
+        List<Orders> ordersList = new LinkedList<>();
 
-        List<Object> productList = new LinkedList<>();
-        List<Object> itemsList = new LinkedList<>();
-        List<Object> dataList = new LinkedList<>();
-        List<Object> objectList = new LinkedList<>();
-
-        System.out.println("---");
         for (Map.Entry<String, Integer> order : userOrders.entrySet()) {
             String orderKey = order.getKey();
             Integer orderValue = order.getValue();
             String[] parts = orderKey.split("-");
             for (String part : parts) {
-                if(!part.contains(" ")){
+                if(!part.contains(" ")){//product
                     int key = Integer.parseInt(part);
                     Product product = productService.findProductById(key);
-                    productList.add(product);
+                    productN = product.getModel();
                 }
-                if(part.contains(" ")){
-                    dataList.add(part);
+                if(part.contains(" ")){//data
+                    date = part;
                 }
             }
-            itemsList.add(orderValue);
+            //value
+            ordersList.add(new Orders(productN,orderValue,date));
         }
-        objectList.add(productList);
-        objectList.add(itemsList);
-        objectList.add(dataList);
 
         model.addAttribute("user", user);
-
-        model.addAttribute("productList", productList);
-        model.addAttribute("itemsList", itemsList);
-        model.addAttribute("dataList", dataList);
-
-        model.addAttribute("objectList", objectList);
+        model.addAttribute("ordersList", ordersList);
         return "orders";
     }
 
