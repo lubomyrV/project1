@@ -10,7 +10,7 @@
     <p><a href="/admin"> admin page </a></p>
     <p><a href="/"> index page </a></p>
 
-    <form action="/updateProduct" method="post" enctype="multipart/form-data">
+    <form action="/admin/updateProduct" method="post" enctype="multipart/form-data">
         <th:block th:each=" product:${product}">
             <p>Update product</p>
             <img th:src="${product.image}" height="100px" />

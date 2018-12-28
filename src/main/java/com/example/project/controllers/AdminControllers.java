@@ -1,8 +1,11 @@
 package com.example.project.controllers;
 
+import com.example.project.models.Authority;
 import com.example.project.models.Product;
+import com.example.project.models.User;
 import com.example.project.services.ProductService;
 import com.example.project.services.StorageService;
+import com.example.project.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,13 +17,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class AdminControll {
+public class AdminControllers {
 
     @Autowired
     private ProductService productService;
 
     @Autowired
     private StorageService storageService;
+
+    @Autowired
+    private UserService userService;
 
     private int elementsOnPage = 2;
     private String sortPages = "idAsc";
@@ -33,12 +39,21 @@ public class AdminControll {
         return "/admin";
     }
 
-    @GetMapping("/newProduct")
+    @GetMapping("/admin/newProduct")
     public String newProduct () {
         return "/newproduct";
     }
 
-    @GetMapping("/showAllProducts")
+    @GetMapping("/admin/showAllUsers")
+    public String showAllUsers (Model model) {
+        List<User> users = userService.findAll();
+        long countUsers = userService.countUsers();
+        model.addAttribute("users",users);
+        model.addAttribute("countUsers", countUsers);
+        return "/admin";
+    }
+
+    @GetMapping("/admin/showAllProducts")
     public String showProduct (Model model) {
         List<Product> products = productService.showPage(0,elementsOnPage,sortPages);
         List<Integer> numberPagesList = productService.getNumberPagesList(elementsOnPage);
@@ -55,7 +70,7 @@ public class AdminControll {
         return "/admin";
     }
 
-    @GetMapping("/page-{number}")
+    @GetMapping("/admin/page-{number}")
     public String page(@PathVariable("number") int number, Model model) {
         number--;
         List<Product> products = productService.showPage(number, elementsOnPage,sortPages);
@@ -78,7 +93,7 @@ public class AdminControll {
         return "/admin";
     }
 
-    @PostMapping("/addProduct")
+    @PostMapping("/admin/addProduct")
     public String addProduct (@RequestParam("model") String model, @RequestParam("price") double price, @RequestParam("producer") String producer,
                               @RequestParam("description") String description, @RequestParam("file") MultipartFile multipartFile) {
         String fileName;
@@ -115,7 +130,7 @@ public class AdminControll {
         return "redirect:/admin";
     }
 
-    @PostMapping("/updateProduct")
+    @PostMapping("/admin/updateProduct")
     public String updateProduct (@RequestParam("id") int id, @RequestParam("model") String model, @RequestParam("price") double price, @RequestParam("producer") String producer,
                                  @RequestParam("description") String description, @RequestParam("image") String image, @RequestParam("file") MultipartFile multipartFile) {
         Product product = productService.findProductById(id);
@@ -152,17 +167,17 @@ public class AdminControll {
             realPath = product.getRealPath();
         }
         productService.updateProduct(id,model,price,producer,description,image,realPath);
-        return "redirect:/showAllProducts";
+        return "redirect:/admin/showAllProducts";
     }
 
-    @GetMapping("/findProduct")
+    @GetMapping("/admin/findProduct")
     public String findModel (@RequestParam String modelProduct, Model model){
         List<Product> productList = productService.findProductByModel(modelProduct);
         model.addAttribute("productList", productList);
         return "/admin";
     }
 
-    @GetMapping("/search")
+    @GetMapping("/admin/search")
     public String findProducer (@RequestParam(value = "producer1", required = false) String producer1, @RequestParam(value = "producer2", required = false) String producer2,
                                 @RequestParam(value = "producer3", required = false) String producer3, @RequestParam(value = "producer4", required = false) String producer4,
                                 @RequestParam(value = "producer5", required = false) String producer5, @RequestParam(value = "producer6", required = false) String producer6,
@@ -184,13 +199,13 @@ public class AdminControll {
         return "/admin";
     }
 
-    @GetMapping("/elements")
+    @GetMapping("/admin/elements")
     public String elements (@RequestParam("elements") int elements){
         elementsOnPage = elements;
-        return "redirect:/showAllProducts";
+        return "redirect:/admin/showAllProducts";
     }
 
-    @GetMapping("/sortProduct")
+    @GetMapping("/admin/sortProduct")
     public String sortPtoduct (@RequestParam("sort") String sort, Model model){
 
         switch(sort) {
@@ -221,39 +236,57 @@ public class AdminControll {
         List<Product> products = productService.showPage(0,elementsOnPage,sortPages);
         model.addAttribute("allProducts", products);
         model.addAttribute("elements", elementsOnPage);
-        return "redirect:/showAllProducts";
+        return "redirect:/admin/showAllProducts";
     }
 
-    @PostMapping("/edit")
+    @GetMapping("/admin/editUser")
+    public String editUser(@RequestParam int id, Model model){
+        User userOld = userService.findById(id);
+        model.addAttribute("userOld", userOld);
+        return "edituser";
+    }
+
+    @PostMapping("/admin/updateUser")
+    public String updateProduct (@RequestParam("id") int id,
+                                 @RequestParam("username") String username,
+                                 @RequestParam("email") String email,
+                                 @RequestParam("role") String role) {
+        String authority;
+        switch(role) {
+            case "user":
+                authority = ""+Authority.ROLE_USER;
+                break;
+            case "moderator":
+                authority = ""+Authority.ROLE_MODERATOR;
+                break;
+            default:
+                authority = ""+Authority.ROLE_USER;
+                break;
+        }
+        userService.updateUser(id,username,email,authority);
+        return "redirect:/admin/showAllUsers";
+    }
+
+    @GetMapping("/admin/edit")
     public String edit(@RequestParam int id, Model model){
         Product productOld = productService.findProductById(id);
         model.addAttribute("product", productOld);
-        return "/edit";
+        return "edit";
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/admin/delete")
     public String delProduct (@RequestParam int id){
         String oldPath = productService.findProductById(id).getRealPath();
         storageService.deleteImg(oldPath);
         productService.deleteProductById(id);
-        return "redirect:/showAllProducts";
+        return "redirect:/admin/showAllProducts";
     }
 
     @GetMapping("/admin/{productModel}-{id}")
     public String laptop(@PathVariable("productModel") String productModel,@PathVariable("id") int id, Model model){
         Product product = productService.findProductById(id);
         model.addAttribute("product", product);
-        return "adminproduct";
-    }
-
-    @GetMapping("/logout")
-    public String logout (){
-        return "/index";
-    }
-
-    @GetMapping("/login")
-    public String login (){
-        return "/login";
+        return "/adminproduct";
     }
 
 }

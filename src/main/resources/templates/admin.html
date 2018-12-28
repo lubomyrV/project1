@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8"/>
     <title>Title</title>
@@ -7,18 +8,22 @@
 <body>
     <h2>Admin page</h2>
 
-    <p><a href="/logout"> Sign out </a></p>
-    <p><a href="/"> Index page </a></p>
-    <p><a href="/newProduct"> Add new product </a></p>
-    <p><a href="/showAllProducts"> Show all products </a></p>
+    <span sec:authorize="isAuthenticated()">
+        | Logged : <span sec:authentication="name"></span> | Role: <span sec:authentication="principal.authorities"></span> |
+    </span>
 
-    <form action="findProduct" method="get">
+    <p><a href="/"> Index page </a></p>
+    <p><a href="/admin/newProduct"> Add new product </a></p>
+    <p><a href="/admin/showAllProducts"> Show all products </a></p>
+    <p><a href="/admin/showAllUsers"> Show all users </a></p>
+
+    <form action="/admin/findProduct" method="get">
         <p>Find product by model:</p>
         <p>Model <input type="text" name="modelProduct" required="required"/>
         <input type="submit" value="find" /></p>
     </form>
     <br />
-    <form action="/search" method="get">
+    <form action="/admin/search" method="get">
         <p>Find product:</p>
         <p>Price from <input type="text" name="priceFrom" th:value="${priceFrom}" pattern="[0-9.]+" title="Please enter only positive numbers"/>
             to <input type="text" name="priceTo" th:value="${priceTo}" pattern="[0-9.]+" title="Please enter only positive numbers"/></p>
@@ -36,7 +41,7 @@
 
     <div data-th-if="${allProducts}" >
 
-        <form action="/elements" method="get" >
+        <form action="/admin/elements" method="get" >
             <p>Elements on page
             <select name="elements">
                 <option th:value="${elements}" ><span th:text="${elements}"></span></option>
@@ -49,7 +54,7 @@
             <input type="submit" value="apply"/></p>
         </form>
 
-        <form action="/sortProduct" method="get" >
+        <form action="/admin/sortProduct" method="get" >
             <p>Sort products by
             <select name="sort">
                 <option th:value="${sortName}" ><span th:text="${sortName}"></span></option>
@@ -67,14 +72,11 @@
         <div data-th-if="${countProducts}" ><p th:text="'Count products: '+${countProducts}"></p></div>
 
         <div data-th-if="${numberPagesList}" >
-
-            <span data-th-if="${prevPage}" ><a th:href="'page-'+${prevPage}"> prev </a></span>
+            <span data-th-if="${prevPage}" ><a th:href="'/admin/page-'+${prevPage}"> prev </a></span>
             <th:div th:each=" page:${numberPagesList}">
                 <a th:href="'page-'+${page+1}"><span th:text="${page+1}"></span></a>
             </th:div>
-            <span data-th-if="${nextPage}" ><a th:href="'page-'+${nextPage+1}"> next </a></span>
-
-
+            <span data-th-if="${nextPage}" ><a th:href="'/admin/page-'+${nextPage+1}"> next </a></span>
         </div>
 
     </div>
@@ -88,7 +90,7 @@
             <input type="hidden" name="id" th:value="${product.id}"  />
             <input type="submit" value="edit" />
         </form>
-        <form action="/delete" method="post">
+        <form action="/admin/delete" method="post">
             <input type="hidden" name="id" th:value="${product.id}"  />
             <input type="submit" value="delete" />
         </form>
@@ -99,13 +101,24 @@
         <img th:src="${product.image}" height="100" />
         <p><a th:href="'/admin/'+${product.model}+'-'+${product.id}"><span th:text="${product.model}"></span></a></p>
         <p th:text=" 'Id: ' + ${product.id} + ', Model: '+ ${product.model} +',  Price: ' + ${product.price} +', Producer: '+ ${product.producer} +', Description: '+ ${product.description}"/>
-        <form action="/edit" method="post">
+
+        <form action="/admin/edit" method="get">
             <input type="hidden" name="id" th:value="${product.id}"  />
             <input type="submit" value="edit" />
         </form>
-        <form action="/delete" method="post">
+        <form action="/admin/delete" method="post">
             <input type="hidden" name="id" th:value="${product.id}"  />
             <input type="submit" value="delete" />
+        </form>
+        <hr/>
+    </th:block>
+
+    <div data-th-if="${countUsers}" ><p th:text="'Number of users: '+${countUsers}"></p></div>
+    <th:block th:each=" user:${users}">
+        <p th:text="'Id: ' + ${user.id} + ', Username: ' + ${user.username} + ', E-mail: '+ ${user.email} + ', Role: '+ ${user.authority}" />
+        <form action="/admin/editUser" method="get">
+            <input type="hidden" name="id" th:value="${user.id}"  />
+            <input type="submit" value="edit" />
         </form>
         <hr/>
     </th:block>

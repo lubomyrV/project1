@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Basket</title>
+</head>
+<body>
+    <h1>Basket</h1>
+    <p><a href="/"> Index page </a></p>
+    <th:block th:each="thisUser:${user}">
+        <p th:text="'username: '+ ${thisUser.username}"/>
+    </th:block>
+    <table th:each="instance : ${basketList}">
+        <tr>
+            <td th:each="product:${instance.key}">
+                <img th:src="${product.image}" height="50" />
+                <p><a th:href="${product.model}+'-'+${product.id+42}"><span th:text="${product.model}"></span></a></p>
+                <p th:text="'Model: '+ ${product.model} +',  Price: ' + ${product.price} + ', Description: '+ ${product.description}"/>
+            </td>
+            <td th:each="product:${instance.key}"><a th:href="'/basket/sub-'+${product.id+42}"> - </a></td>
+            <td th:text="${instance.value}"></td>
+            <td th:each="product:${instance.key}"><a th:href="'/basket/add-'+${product.id+42}"> + </a></td>
+            <td th:each="product:${instance.key}">
+                <form action="/basket/remove" method="post">
+                    <input type="hidden" name="productId" th:value="${product.id}"  />
+                    <input type="submit" value="Remove" />
+                </form>
+            </td>
+        </tr>
+    </table>
+    <span data-th-if="${basket}">
+        <p th:each="user:${user}">
+            <form action="/basket/sendOrder" method="post">
+                <input type="hidden" name="userId" th:value="${user.id}"  />
+                <input type="submit" value="Order" />
+            </form>
+        </p>
+    </span>
+
+
+</body>
+</html>

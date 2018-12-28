@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Orders</title>
+</head>
+<body>
+    <h1>Your orders</h1>
+    <th:block th:each="thisUser:${user}">
+        <p th:text="'username: '+ ${thisUser.username}"/>
+    </th:block>
+
+    <span th:each="order : ${ordersList}">
+            <p th:text="' - product: '+${order.product}+', quantity: '+ ${order.quantity}+', date: '+ ${order.date}"></p>
+    </span>
+
+    <p><a href="/"> Index page </a></p>
+</body>
+</html>
+
+
