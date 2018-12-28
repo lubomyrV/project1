@@ -11,6 +11,6 @@ To run this application, you need the following tools:
 3) Eclipse IDE or IntelliJ IDEA
 
 There is a security level, you can register new user or use following accounts: 
-1) for ADMIN use username and password 'r'
-2) for MODERATOR use username and password 'm'
-3) for USER use username and password 'u'
+1) for 'admin' use username and password 'r'
+2) for 'moderator' use username and password 'm'
+3) for 'user' use username and password 'u'
