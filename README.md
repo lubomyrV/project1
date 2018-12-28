@@ -1,7 +1,7 @@
 # project1
 Simple Web store with some functionality based on Spring framework
 
-To run this application, you need the following tools:
+To run this application, you need following tools:
 1) JRE,JDK v.8
 2) MySQL v.5.5 or MariaDB v.10
   - take a look into this file 'src/main/resources/application.properties', 
