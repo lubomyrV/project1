@@ -24,7 +24,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 
 
-    //these methods are not needed, but I had to implement them
+    //****
     @Override
     public void configurePathMatch(PathMatchConfigurer pathMatchConfigurer) {
 
