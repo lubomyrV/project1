@@ -9,4 +9,6 @@ To run this application, you need following tools:
 
 Pay attention, some changes required, take a look into this file 'src/main/resources/application.properties', change following fields: 'spring.datasource.username', 'spring.datasource.password' and 'spring.jpa.hibernate.dialect' to corresponding values of your DB.
 
+After running the app will automatically create 'laptopDB2' database, and folder 'images'  in your home directory.
+
 There is a security level, you can register new user or use admin account with username and password 'r'
