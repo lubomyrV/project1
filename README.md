@@ -6,7 +6,7 @@ To run this application, you need following tools:
 2) MySQL v.5.5 or MariaDB v.10
   - take a look into this file 'src/main/resources/application.properties', 
   change fields 'spring.datasource.username', 'spring.datasource.password' 
-  and 'spring.jpa.hibernate.dialect' to corresponding values of yours DB.
+  and 'spring.jpa.hibernate.dialect' to corresponding of values in your DB.
 2) Maven v.4
 3) Eclipse IDE or IntelliJ IDEA
 
