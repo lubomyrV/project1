@@ -10,7 +10,4 @@ To run this application, you need following tools:
 2) Maven v.4
 3) Eclipse IDE or IntelliJ IDEA
 
-There is a security level, you can register new user or use following accounts: 
-1) for 'admin' use username and password 'r'
-2) for 'moderator' use username and password 'm'
-3) for 'user' use username and password 'u'
+There is a security level, you can register new user or use admin account with username and password 'r'
