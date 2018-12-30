@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -31,16 +30,16 @@ public class AdminControllers {
     private int elementsOnPage = 2;
     private String sortPages = "idAsc";
     private String sortName = "id asc";
-    private String defaultPath = new File("").getAbsolutePath()+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"static"+File.separator+"images"+File.separator;
+    //private String defaultPath = new File("").getAbsolutePath()+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"static"+File.separator+"images"+File.separator;
 
     @GetMapping("/admin")
     public String admin () {
-        return "/admin";
+        return "admin";
     }
 
     @GetMapping("/admin/newProduct")
     public String newProduct () {
-        return "/newproduct";
+        return "newproduct";
     }
 
     @GetMapping("/admin/showAllUsers")
@@ -49,7 +48,7 @@ public class AdminControllers {
         long countUsers = userService.countUsers();
         model.addAttribute("users",users);
         model.addAttribute("countUsers", countUsers);
-        return "/admin";
+        return "admin";
     }
 
     @GetMapping("/admin/showAllProducts")
@@ -66,7 +65,7 @@ public class AdminControllers {
         model.addAttribute("allProducts", products);
         model.addAttribute("elements", elementsOnPage);
         model.addAttribute("sortName", sortName);
-        return "/admin";
+        return "admin";
     }
 
     @GetMapping("/admin/page-{number}")
@@ -89,7 +88,7 @@ public class AdminControllers {
         model.addAttribute("allProducts", products);
         model.addAttribute("elements", elementsOnPage);
         model.addAttribute("sortName", sortName);
-        return "/admin";
+        return "admin";
     }
 
     @PostMapping("/admin/addProduct")
@@ -98,7 +97,7 @@ public class AdminControllers {
         String fileName;
         String  path = System.getProperty("user.home") + File.separator + "images" + File.separator;
         if (multipartFile.isEmpty()){
-            File source = new File(defaultPath+"defImg.jpg");
+            File source = new File(path+"defaultImage.jpg");
             File dest = new File(System.getProperty("user.home") + File.separator + "images" + File.separator+model+".jpg");
             try {
                 storageService.copyFile(source,dest);
@@ -126,7 +125,7 @@ public class AdminControllers {
         emptyProduct.setImage(File.separator + "img" + File.separator + fileName);
         emptyProduct.setRealPath(path + fileName);
         productService.add(emptyProduct);
-        return "redirect:/admin";
+        return "admin";
     }
 
     @PostMapping("/admin/updateProduct")
@@ -173,7 +172,7 @@ public class AdminControllers {
     public String findModel (@RequestParam String modelProduct, Model model){
         List<Product> productList = productService.findProductByModel(modelProduct);
         model.addAttribute("productList", productList);
-        return "/admin";
+        return "admin";
     }
 
     @GetMapping("/admin/search")
@@ -195,7 +194,7 @@ public class AdminControllers {
         model.addAttribute("producer8",producer8);
         model.addAttribute("priceFrom",priceFrom);
         model.addAttribute("priceTo",priceTo);
-        return "/admin";
+        return "admin";
     }
 
     @GetMapping("/admin/elements")
@@ -285,7 +284,7 @@ public class AdminControllers {
     public String laptop(@PathVariable("productModel") String productModel,@PathVariable("id") int id, Model model){
         Product product = productService.findProductById(id);
         model.addAttribute("product", product);
-        return "/adminproduct";
+        return "adminproduct";
     }
 
 }

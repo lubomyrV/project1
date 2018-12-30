@@ -47,7 +47,7 @@ public class MainControllers {
 
     @GetMapping("/registration")
     public String registration() {
-        return "/registration";
+        return "registration";
     }
 
     @GetMapping("/{productModel}-{id}")
@@ -55,14 +55,14 @@ public class MainControllers {
         id = id - 42;
         Product product = productService.findProductById(id);
         model.addAttribute("product", product);
-        return "/product";
+        return "product";
     }
 
     @GetMapping("/lprice")
     public String findModel (@RequestParam Double price, Model model){
         List<Product> listProducts = productService.findLessPrice(price);
         model.addAttribute("listProducts", listProducts);
-        return "/index";
+        return "index";
     }
 
     @GetMapping("/reset")
@@ -100,7 +100,7 @@ public class MainControllers {
 
     @GetMapping("/login")
     public String login (){
-        return "/login";
+        return "login";
     }
 
     @GetMapping("/auth")
@@ -110,6 +110,6 @@ public class MainControllers {
 
     @GetMapping("/accessdenied")
     public String accessdenied(){
-        return "/accessdenied";
+        return "accessdenied";
     }
 }
