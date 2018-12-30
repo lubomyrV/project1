@@ -11,14 +11,14 @@ Pay attention, some changes required, take a look into this file `src/main/resou
 
 To build this app you need to run:
 
-$ mvn clean
+`$ mvn clean`
 
-$ mvn compile
+`$ mvn compile`
 
-$ mvn package
+`$ mvn package`
 
 After running the app will automatically create `laptopDB2` database, and folder `images` in your home directory. You can set default image for each product if you put `defaultImage.jpg` into the `images` folder. There is a security level, you can register new user or use admin account with username and password `r`.
 
 For running the app, go to `target/` and run
 
-$ java -jar project-0.0.3-SNAPSHOT.jar
+`$ java -jar project-0.0.3-SNAPSHOT.jar`
