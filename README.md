@@ -7,7 +7,7 @@ To run this application, you need following tools:
 2) Apache Maven 3.3.9
 3) Eclipse IDE or IntelliJ IDEA
 
-Pay attention, some changes required, take a look into this file 'src/main/resources/application.properties', change following fields: 'spring.datasource.username', 'spring.datasource.password' and 'spring.jpa.hibernate.dialect' to corresponding values of your DB.
+Pay attention, some changes required, take a look into this file `src/main/resources/application.properties`, change following fields: `spring.datasource.username`, `spring.datasource.password` and `spring.jpa.hibernate.dialect` to corresponding values of your DB.
 
 To build this app you need to run:
 
@@ -17,8 +17,8 @@ $ mvn compile
 
 $ mvn package
 
-After running the app will automatically create 'laptopDB2' database, and folder 'images' in your home directory. You can set default image for each product if you put 'defaultImage.jpg' into the 'images' folder. There is a security level, you can register new user or use admin account with username and password 'r'.
+After running the app will automatically create `laptopDB2` database, and folder `images` in your home directory. You can set default image for each product if you put `defaultImage.jpg` into the `images` folder. There is a security level, you can register new user or use admin account with username and password `r`.
 
-For running the app, go to '/target/' and run
+For running the app, go to `target/` and run
 
 $ java -jar project-0.0.3-SNAPSHOT.jar
