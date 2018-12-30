@@ -16,7 +16,7 @@
             <img th:src="${product.image}" height="100px" />
             <p>Id <input type="text" name="id" th:value="${product.id}" readonly="readonly"/></p>
             <p>Model <input type="text" name="model" th:value="${product.model}" /></p>
-            <p>Price <input type="text" name="price" th:value="${product.price}" /></p>
+            <p>Price <input type="number" min="1" name="price" th:value="${product.price}" /></p>
             <p>Producer <select name="producer" >
                 <option th:value="${product.producer}" ><span th:text="${product.producer}"></span></option>
                 <option value="Acer" >Acer</option>

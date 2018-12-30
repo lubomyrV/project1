@@ -9,7 +9,7 @@
     <form action="/admin/addProduct" method="post" enctype="multipart/form-data">
         <p>Add new product</p>
         <p>Model <input type="text" name="model" required="required"/></p>
-        <p>Price <input type="text" name="price" required="required"/></p>
+        <p>Price <input type="number" name="price" min="1" required="required"/></p>
         <p>Producer <select name="producer">
             <option value="Acer" >Acer</option>
             <option value="Apple" >Apple</option>
